@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { StyleSheet } from 'react-native';
 
-const Login = () => {
+const Login = ({navigation}) => {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
 
     const handleLogin = () => {
-        Alert.alert(`Email: ${email}\nSenha: ${senha}`)
+        navigation.reset({
+          index: 0,
+          routes:[{name: "HomeTab"}]
+        })
     }
 
     return <View style={stylesLogin.container}>
@@ -20,13 +23,15 @@ const Login = () => {
             placeholder='Email'
             value={email}
             onChangeText={text => setEmail(text)}
+            keyboardType='email-address'
         />
 
         <TextInput
             style={stylesLogin.input}
             placeholder='Senha'
             value={senha}
-            onChangeText={text => setSenha(text)}
+            onChangeText={text => setSenha(text)} 
+            secureTextEntry={true}
         />
 
         <TouchableOpacity style={stylesLogin.button} onPress={handleLogin}>
