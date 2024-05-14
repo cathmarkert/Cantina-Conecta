@@ -15,9 +15,13 @@
       "**/*"
     ],
     "ios": {
+      "Entypo": "./node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
+      "Ionicons": "./node_modules/react-native-vector-icons/Fonts/Ionicons.ttf",
       "supportsTablet": true
     },
     "android": {
+      "Entypo": "./node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
+      "Ionicons": "./node_modules/react-native-vector-icons/Fonts/Ionicons.ttf",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"

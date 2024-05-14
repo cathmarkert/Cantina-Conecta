@@ -1,7 +1,8 @@
 import { StyleSheet, Text,} from 'react-native';
 import Login from './src/screens/login';
 import Home from './src/screens/home';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { Ionicons } from "@expo/vector-icons";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -17,15 +18,52 @@ const Pass = () => {
 
 function HomeTabs() {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+
+      screenOptions={({ route }) => ({
+        tabBarShowLabel:true,
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+
+          if (route.name === 'Inicio') {
+            iconName = focused
+              ? 'home'
+              : 'home-outline';
+          } else if (route.name === 'Buscar') {
+            iconName = focused 
+              ? 'search'
+              : 'search-outline';
+          } else if (route.name === 'Pagamento') {
+            iconName = focused 
+              ? 'cash'
+              : 'cash-outline';
+          }
+          return <Icon name={iconName} size={size} color={color} />;
+        },
+
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: 'bold',
+        },
+
+        tabBarIconStyle: {
+          size: 10, // Tamanho do ícone
+        },
+        
+        tabBarActiveTintColor: 'tomato',
+        tabBarInactiveTintColor: 'gray'
+      
+      })}
+  
+    >
       <Tab.Screen 
         name="Buscar" 
-        component={Pass}  
+        component={Home}  
         options={{ 
           tabBarLabel: 'Buscar',
           headerShown: false, 
-          tabBarIcon: ({ color, size }) => (
-          <Icon name="search" size={size} color="#000" />)   
+          // tabBarIcon: ({ color, size }) => (
+          // <Icon name={'search'} size={size} color={color} />)   
         }}
       />
       <Tab.Screen
@@ -34,18 +72,25 @@ function HomeTabs() {
         options={{ 
           tabBarLabel: 'Inicio',
           headerShown: false, 
-          tabBarIcon: ({ color, size }) => (
-          <Icon name="home" color={color} size={size} />),  
+          tabBarIcon: (tabInfo) => {
+            return (
+              <Ionicons
+                name="home"
+                size={24}
+                color={tabInfo.focused ? "#006600" : "#8e8e93"}
+              />
+            );
+          },
         }}
       />
       <Tab.Screen 
         name="Pagamento" 
-        component={Pass}  
+        component={Home}  
         options={{ 
           tabBarLabel: 'Pagamento',
           headerShown: false, 
-          tabBarIcon: ({ color, size }) => (
-          <Icon name="credit-card" color={color} size={size} />),  
+          // tabBarIcon: ({ color, size }) => (
+          // <Icon name={'cash'} size={size} color={color} />)
         }}
       />
     </Tab.Navigator>
