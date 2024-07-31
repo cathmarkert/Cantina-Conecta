@@ -19,7 +19,7 @@ const Pass = () => {
 function HomeTabs() {
   return (
     <Tab.Navigator
-
+      initialRouteName="Inicio"
       screenOptions={({ route }) => ({
         tabBarShowLabel:true,
         tabBarIcon: ({ focused, color, size }) => {
@@ -29,10 +29,10 @@ function HomeTabs() {
             iconName = focused
               ? 'home'
               : 'home-outline';
-          } else if (route.name === 'Buscar') {
+          } else if (route.name === 'Selecionar') {
             iconName = focused 
-              ? 'search'
-              : 'search-outline';
+              ? 'pricetags'
+              : 'pricetags-outline';
           } else if (route.name === 'Pagamento') {
             iconName = focused 
               ? 'cash'
@@ -41,29 +41,35 @@ function HomeTabs() {
           return <Icon name={iconName} size={size} color={color} />;
         },
 
+        tabBarStyle: {
+          height: 60,
+          paddingTop: 5, 
+          paddingBottom: 5,
+        },
+
         tabBarLabelStyle: {
           fontSize: 12,
           fontWeight: 'bold',
         },
 
         tabBarIconStyle: {
-          size: 10, // Tamanho do ícone
+          size: 10,
         },
         
-        tabBarActiveTintColor: 'tomato',
-        tabBarInactiveTintColor: 'gray'
+        tabBarActiveTintColor: '#050C9C',
+        tabBarInactiveTintColor: '#8285CD'
       
       })}
   
     >
       <Tab.Screen 
-        name="Buscar" 
+        name="Selecionar" 
         component={Home}  
         options={{ 
-          tabBarLabel: 'Buscar',
+          tabBarLabel: 'Selecionar',
           headerShown: false, 
           // tabBarIcon: ({ color, size }) => (
-          // <Icon name={'search'} size={size} color={color} />)   
+          // <Icon name={'pricetags-outline'} size={size} color={color} />)   
         }}
       />
       <Tab.Screen
@@ -72,15 +78,8 @@ function HomeTabs() {
         options={{ 
           tabBarLabel: 'Inicio',
           headerShown: false, 
-          tabBarIcon: (tabInfo) => {
-            return (
-              <Ionicons
-                name="home"
-                size={24}
-                color={tabInfo.focused ? "#006600" : "#8e8e93"}
-              />
-            );
-          },
+          // tabBarIcon: ({ color, size }) => (
+          //   <Icon name={'home'} size={size} color={color} />)
         }}
       />
       <Tab.Screen 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Text, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+// import Icon from 'react-native-vector-icons/Ionicons';
 
 // import { Container } from './styles';
 
@@ -11,6 +12,7 @@ const HeaderHome = () => {
     <View style ={styles.header}>
         <Text>
             <Icon name="bars" size={30} color="#000" style={styles.icon} /> {/* Ícone do menu */}    
+            {/* <Icon name={'pricetags-outline'} size={size} color={color} /> */}
         </Text>
         <Text style={styles.title}>Cantina Conecta</Text>
         <Text>
