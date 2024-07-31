@@ -10,30 +10,34 @@ const Home = () => {
   const formattedCredit = "1234.56"; // Replace this with your actual credit data
 
   return (
-    <View style={styles.container}>
-      <HeaderHome/>
-      {/* Other body content */}
+    <View style={styles.screen}>
+      <HeaderHome />
       
-      {/* Amount container with an icon button */}
-      <View style={styles.amountContainer}>
-        <View style={styles.creditBox}>
-          <Text style={styles.amountText}>R$ {formattedCredit.replace('.', ',')}</Text>
+      <View style={styles.container}>
+        {/* Amount container with an icon button */}
+        <View style={styles.amountContainer}>
+          <View style={styles.creditBox}>
+            <Text style={styles.amountText}>R$ {formattedCredit.replace('.', ',')}</Text>
+          </View>
+          <TouchableOpacity onPress={() => navigation.navigate('Pagamento')}>
+            <Icon name="cash-outline" size={24} color="#006600" />
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate('Pagamento')}>
-          <Icon name="cash-outline" size={24} color="#006600" />
-        </TouchableOpacity>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: '#fff',
   },
   amountContainer: {
     flexDirection: 'row',
@@ -42,9 +46,15 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 16,
     backgroundColor: '#f9f9f9',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   creditBox: {
-    // Define styles for the credit box
+    flex: 1,
   },
   amountText: {
     fontSize: 18,
@@ -53,4 +63,3 @@ const styles = StyleSheet.create({
 });
 
 export default Home;
-
