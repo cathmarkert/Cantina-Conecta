@@ -6,6 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import PaymentScreen from './src/screens/pagamento';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -19,24 +20,17 @@ const Pass = () => {
 function HomeTabs() {
   return (
     <Tab.Navigator
-
       screenOptions={({ route }) => ({
-        tabBarShowLabel:true,
+        tabBarShowLabel: true,
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
           if (route.name === 'Inicio') {
-            iconName = focused
-              ? 'home'
-              : 'home-outline';
+            iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Buscar') {
-            iconName = focused 
-              ? 'search'
-              : 'search-outline';
+            iconName = focused ? 'search' : 'search-outline';
           } else if (route.name === 'Pagamento') {
-            iconName = focused 
-              ? 'cash'
-              : 'cash-outline';
+            iconName = focused ? 'cash' : 'cash-outline';
           }
           return <Icon name={iconName} size={size} color={color} />;
         },
@@ -52,9 +46,7 @@ function HomeTabs() {
         
         tabBarActiveTintColor: 'tomato',
         tabBarInactiveTintColor: 'gray'
-      
       })}
-  
     >
       <Tab.Screen 
         name="Buscar" 
@@ -62,8 +54,6 @@ function HomeTabs() {
         options={{ 
           tabBarLabel: 'Buscar',
           headerShown: false, 
-          // tabBarIcon: ({ color, size }) => (
-          // <Icon name={'search'} size={size} color={color} />)   
         }}
       />
       <Tab.Screen
@@ -72,25 +62,21 @@ function HomeTabs() {
         options={{ 
           tabBarLabel: 'Inicio',
           headerShown: false, 
-          tabBarIcon: (tabInfo) => {
-            return (
-              <Ionicons
-                name="home"
-                size={24}
-                color={tabInfo.focused ? "#006600" : "#8e8e93"}
-              />
-            );
-          },
+          tabBarIcon: (tabInfo) => (
+            <Ionicons
+              name="home"
+              size={24}
+              color={tabInfo.focused ? "#006600" : "#8e8e93"}
+            />
+          ),
         }}
       />
       <Tab.Screen 
         name="Pagamento" 
-        component={Home}  
+        component={PaymentScreen}  
         options={{ 
           tabBarLabel: 'Pagamento',
           headerShown: false, 
-          // tabBarIcon: ({ color, size }) => (
-          // <Icon name={'cash'} size={size} color={color} />)
         }}
       />
     </Tab.Navigator>
@@ -103,6 +89,7 @@ export default function App() {
           <Stack.Navigator>
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false}}/>
             <Stack.Screen name="HomeTab" component={HomeTabs}  options={{ headerShown: false  }}/>
+            <Stack.Screen name="Pagamento" component={PaymentScreen} />
           </Stack.Navigator>
         </NavigationContainer>
   );
