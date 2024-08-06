@@ -7,6 +7,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PaymentScreen from './src/screens/pagamento';
+import SelectScreen from './src/screens/selecionar';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -52,7 +53,7 @@ function HomeTabs() {
     >
       <Tab.Screen 
         name="Selecionar" 
-        component={Home}  
+        component={SelectScreen}  
         options={{ 
           tabBarLabel: 'Selecionar',
           headerShown: false, 
