@@ -1,6 +1,7 @@
 import { StyleSheet, Text,} from 'react-native';
 import Login from './src/screens/login';
 import Home from './src/screens/home';
+import Extrato from './src/screens/extrato';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Ionicons } from "@expo/vector-icons";
 import { NavigationContainer } from '@react-navigation/native';
@@ -52,7 +53,7 @@ function HomeTabs() {
     >
       <Tab.Screen 
         name="Selecionar" 
-        component={Home}  
+        component={Extrato}  
         options={{ 
           tabBarLabel: 'Selecionar',
           headerShown: false, 

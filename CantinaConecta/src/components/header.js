@@ -1,18 +1,15 @@
 import React from 'react';
-import { View, StyleSheet, Text, Dimensions } from 'react-native';
+import { View, Text} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-// import Icon from 'react-native-vector-icons/Ionicons';
+import styles from './stylesHeader';
 
 // import { Container } from './styles';
-
-const { width } = Dimensions.get('window');
 
 const HeaderHome = () => {
   return (
     <View style ={styles.header}>
         <Text>
             <Icon name="bars" size={30} color="#000" style={styles.icon} /> {/* Ícone do menu */}    
-            {/* <Icon name={'pricetags-outline'} size={size} color={color} /> */}
         </Text>
         <Text style={styles.title}>Cantina Conecta</Text>
         <Text>
@@ -22,26 +19,5 @@ const HeaderHome = () => {
   );
 }
 
-const styles = StyleSheet.create({
-    header:{
-        height:90,
-        width:width,
-        paddingTop:45,
-        backgroundColor:"#DCDCDC",
-        flexDirection:"row",
-        justifyContent:"space-between",
-        paddingHorizontal:15
-    },
-    title:{
-        textAlign: "center",
-        fontWeight: "bold",
-        fontSize: 20,
-        color:"#000"
-    },
-    icon:{
-        padding:5,
-        
-    }
-})
 
 export default HeaderHome;
