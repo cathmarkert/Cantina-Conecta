@@ -3,12 +3,10 @@ import Login from './src/screens/login';
 import Home from './src/screens/home';
 import Extrato from './src/screens/extrato';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Ionicons } from "@expo/vector-icons";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PaymentScreen from './src/screens/pagamento';
-import SelectScreen from './src/screens/selecionar';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -47,7 +45,7 @@ function HomeTabs() {
           size: 10,
         },
         
-        tabBarActiveTintColor: '#050C9C',
+        tabBarActiveTintColor: '#0000FF',
         tabBarInactiveTintColor: '#8285CD'
       
       })}
