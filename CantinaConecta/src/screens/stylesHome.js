@@ -1,7 +1,7 @@
 import { Container } from 'native-base';
 import { StyleSheet, Dimensions } from 'react-native';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   screen: {
@@ -82,15 +82,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 15,
+    padding: 10,
     backgroundColor: '#0000FF',
-    borderRadius: 30,
+    borderRadius: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 5,
     elevation: 15,
-    margin: 16,
+    margin: 8,
   },
   selectButtonText: {
     color: '#fff',
@@ -100,8 +100,8 @@ const styles = StyleSheet.create({
   },
   ContainerButton:{
     position: 'absolute',
-    bottom: 5,
-    right: 15,
+    bottom: height * 0.00001,
+    right: 7,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
