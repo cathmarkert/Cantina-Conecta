@@ -110,7 +110,8 @@ const styles = StyleSheet.create({
     amountText: {
         fontSize: width * 0.045, // Adjusted based on screen width
         fontWeight: 'bold',
-    }
+    },
+    
 });
 
 export default styles;

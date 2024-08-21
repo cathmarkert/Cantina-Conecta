@@ -10,10 +10,10 @@ const styles = StyleSheet.create({
   },
   mainContent: {
     flex: 1,
-    justifyContent: 'space-between', // Adiciona espaço entre o conteúdo e o botão
+    justifyContent: 'space-between', 
   },
   scrollViewContent: {
-    flexGrow: 1, // Garante que o conteúdo ocupe toda a altura disponível
+    flexGrow: 1, 
   },
   home: {
     backgroundColor: '#F2EFEF',

@@ -44,7 +44,7 @@ const Home = () => {
           </View>
         </ScrollView>
         <View style={styles.ContainerButton}>
-          <TouchableOpacity style={styles.selectButton} onPress={() => navigation.navigate('Dependente')}>
+          <TouchableOpacity style={styles.selectButton} onPress={() => navigation.navigate('Selecionar')}>
             <Icon name="brush" color="#fff" size={20} />
             <Text style={styles.selectButtonText}>Selecionar Lanche</Text>
           </TouchableOpacity>
