@@ -12,7 +12,7 @@ const data = [
 const formattedCredit = "1234.56";
 
 const Parent = () => {
-  const navigation = useNavigation(); // Ensuring the useNavigation hook is in place
+  const navigation = useNavigation(); 
 
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.dependentContainer}>

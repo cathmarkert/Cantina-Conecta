@@ -3,8 +3,7 @@ import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons'; 
 import { useNavigation } from '@react-navigation/native'; 
 import HeaderSaldo from "../components/headerSaldo";
-import Parent from "./parentprofile";
-
+import Dependente from "./childprofile";
 import styles from "./stylesHome";
 
 const Home = () => {
@@ -45,7 +44,7 @@ const Home = () => {
           </View>
         </ScrollView>
         <View style={styles.ContainerButton}>
-          <TouchableOpacity style={styles.selectButton} onPress={() => navigation.navigate('Selecionar')}>
+          <TouchableOpacity style={styles.selectButton} onPress={() => navigation.navigate('Dependente')}>
             <Icon name="brush" color="#fff" size={20} />
             <Text style={styles.selectButtonText}>Selecionar Lanche</Text>
           </TouchableOpacity>

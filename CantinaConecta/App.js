@@ -8,6 +8,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PaymentScreen from './src/screens/pagamento';
 import Parent from './src/screens/parentprofile';
+import Dependente from './src/screens/childprofile';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -90,6 +91,7 @@ export default function App() {
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false}}/>
             <Stack.Screen name="HomeTab" component={HomeTabs}  options={{ headerShown: false  }}/>
             <Stack.Screen name="Parent" component={Parent} options={{ headerShown: false }} />
+            <Stack.Screen name="Dependente" component={Dependente} options={{ headerShown: false }} />
             {/* <Stack.Screen name="Pagamento" component={PaymentScreen} /> */}
           </Stack.Navigator>
         </NavigationContainer>
