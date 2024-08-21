@@ -6,12 +6,12 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const Selecionar = () => {
 
-  
+
     return (
         <View>
-          <HeaderHome />
+            <HeaderHome />
         </View>
-    );  
-  }
-  
-  export default Selecionar;
+    );
+}
+
+export default Selecionar;

@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from "react-native"
+import { StyleSheet, Dimensions } from "react-native";
 
 const { width } = Dimensions.get('window');
 
@@ -8,30 +8,22 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFFFFF",
     },
     title: {
-        justifyContent: 'center',
+        flex: 1,
         textAlign: "center",
         fontWeight: "bold",
-        paddingLeft: 90,
         fontSize: 20,
-        color: "#000"
+        color: "#000",
     },
-    perfil: {
-        textAlign: 'right',
-        fontWeight: "bold",
-        fontSize: 20,
-        color: "#000"
-    },
-    icon: {
+    backButton: {
         padding: 5,
-
     },
     containerHeader: {
         width: width,
         paddingTop: 45,
         backgroundColor: "#FFFFFF",
         flexDirection: "row",
-        justifyContent: "space-between",
-        paddingHorizontal: 15
+        alignItems: 'center',
+        paddingHorizontal: 15,
     },
     containerSaldo: {
         justifyContent: 'center',
@@ -63,6 +55,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
     },
-})
+});
 
 export default styles;
