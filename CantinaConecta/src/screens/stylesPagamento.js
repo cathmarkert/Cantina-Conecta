@@ -1,7 +1,11 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+        backgroundColor: '#fff',
         flex: 1,
         backgroundColor: '#fff',
     },
@@ -9,7 +13,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: 10,
+        marginTop: height * 0.04,
+        paddingHorizontal: width * 0.04,
+        //   padding: 10,
         borderBottomWidth: 1,
         borderBottomColor: '#ddd',
     },
@@ -31,9 +37,15 @@ const styles = StyleSheet.create({
         padding: 16,
     },
     amountText: {
-        fontSize: 24,
+        fontSize: width * 0.06,
         fontWeight: 'bold',
         marginBottom: 20,
+    },
+    selectMethod: {
+        backgroundColor: 'black',
+        padding: width * 0.03,
+        borderRadius: 10,
+        marginBottom: height * 0.04,
     },
     selectText: {
         fontSize: 18,

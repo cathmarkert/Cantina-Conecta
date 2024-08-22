@@ -5,21 +5,22 @@ import { useNavigation } from '@react-navigation/native';
 import styles from './stylesHeader';
 
 const HeaderHome = () => {
-    const navigation = useNavigation();
-    const formattedCredit = "1234.56";
+  const navigation = useNavigation();
+  return (
+    <View style={styles.header}>
+      <View style={styles.containerHeader}>
 
-    return (
-        <View style={styles.header}>
-            <View style={styles.containerHeader}>
+        <Text style={styles.title}>Cantina Conecta</Text>
 
-                <Text style={styles.title}>Cantina Conecta</Text>
-                <Text style={styles.perfil}>
-                    <Icon name="user-circle" size={30} color="#000" style={styles.icon} />
-                </Text>
-            </View>
+        <TouchableOpacity onPress={() => navigation.navigate('Parent')}>
+          <Text>
+            <Icon name="user-circle" size={30} color="#000" style={styles.icon} /> {/* Ícone de perfil */}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+}
 
-        </View>
-    );
-};
 
 export default HeaderHome;
