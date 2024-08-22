@@ -104,6 +104,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 8,
     },
+    checkbox: {
+        width: 20,
+        height: 20,
+        borderWidth: 2,
+        borderColor: '#001BFF', // Border color of the checkbox
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 8,
+        backgroundColor: '#FFFFFF', // White background for the checkbox
+      },
+      checked: {
+        width: 10,
+        height: 10,
+        backgroundColor: '#001BFF', // Checked state color
+      },
     checkboxText: {
         marginLeft: 8,
         fontSize: 14,

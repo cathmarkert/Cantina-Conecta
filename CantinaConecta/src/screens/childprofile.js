@@ -7,8 +7,11 @@ import styles from './stylesChildprofile';
 const Dependente = () => {
     const navigation = useNavigation();
     const route = useRoute();
-    const { dependent } = route.params || {}; // Retrieve dependent data from params
+    const { dependent } = route.params || {};
     const [isChecked, setIsChecked] = useState(false);
+    const toggleCheckbox = () => {
+        setIsChecked(!isChecked);
+    };
 
     if (!dependent) {
         return <Text>No data available</Text>;
@@ -28,13 +31,10 @@ const Dependente = () => {
                 <Text style={styles.profileName}>{dependent.name}</Text>
             </View>
 
-            <View style={styles.child}>
-                <Text style={styles.adjustLimitText}>Ajustar limite</Text>
-            </View>
 
             <View style={styles.balanceSection}>
                 <Text style={styles.balanceText}>{dependent.amount}</Text>
-                <TouchableOpacity style={styles.adjustLimitButton}>
+                <TouchableOpacity style={styles.adjustLimitButton} onPress={() => navigation.navigate('LimitChange')}>
                     <Text style={styles.adjustLimitText}>Ajustar limite</Text>
                 </TouchableOpacity>
             </View>
@@ -43,14 +43,12 @@ const Dependente = () => {
                 <View style={{ flex: 1, marginLeft: 10 }}>
                     <Text style={styles.detailsText}>Matrícula: {dependent.registration}</Text>
                     <Text style={styles.detailsText}>Cantina: Cantina Conecta</Text>
-                    <View style={styles.checkboxContainer}>
-                        {/* <CheckBox
-                            value={isChecked}
-                            onValueChange={setIsChecked}
-                            tintColors={{ true: '#000', false: '#000' }}
-                        /> */}
+                    <TouchableOpacity style={styles.checkboxContainer} onPress={toggleCheckbox}>
+                        <View style={styles.checkbox}>
+                            {isChecked && <View style={styles.checked} />}
+                        </View>
                         <Text style={styles.checkboxText}>Lanche avulso</Text>
-                    </View>
+                    </TouchableOpacity>
                 </View>
             </View>
 
@@ -74,7 +72,7 @@ const Dependente = () => {
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.addButton} onPress={() => { }}>
-                <Text style={styles.addButtonText}>Adicionar Dependente</Text>
+                <Text style={styles.addButtonText}>Remover Dependente</Text>
             </TouchableOpacity>
         </ScrollView>
     );

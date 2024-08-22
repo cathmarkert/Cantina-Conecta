@@ -61,7 +61,7 @@ const Parent = () => {
           style={styles.list}
         />
 
-        <TouchableOpacity style={styles.addButton} onPress={() => { }}>
+        <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('AddChild')}>
           <Text style={styles.addButtonText}>Adicionar Dependente</Text>
         </TouchableOpacity>
       </View>

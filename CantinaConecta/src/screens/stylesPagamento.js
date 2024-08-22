@@ -37,13 +37,15 @@ const styles = StyleSheet.create({
         fontSize: width * 0.06,
         fontWeight: 'bold',
     },
+    selectMethod: {
+        backgroundColor: 'black',
+        padding: width * 0.03, 
+        borderRadius: 10,
+        marginBottom: height * 0.04, 
+    },
     selectText: {
         fontSize: width * 0.045, 
         color: '#fff',
-        backgroundColor: '#050C9C',
-        padding: width * 0.03, 
-        borderRadius: 5,
-        marginBottom: height * 0.04, 
     },
     paymentButton: {
         flexDirection: 'row',

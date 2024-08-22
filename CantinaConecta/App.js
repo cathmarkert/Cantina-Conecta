@@ -9,6 +9,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PaymentScreen from './src/screens/pagamento';
 import Parent from './src/screens/parentprofile';
 import Dependente from './src/screens/childprofile';
+import Limitchange from './src/screens/childchange';
+import AddChild from './src/screens/addchild';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -92,7 +94,8 @@ export default function App() {
             <Stack.Screen name="HomeTab" component={HomeTabs}  options={{ headerShown: false  }}/>
             <Stack.Screen name="Parent" component={Parent} options={{ headerShown: false }} />
             <Stack.Screen name="Dependente" component={Dependente} options={{ headerShown: false }} />
-            {/* <Stack.Screen name="Pagamento" component={PaymentScreen} /> */}
+            <Stack.Screen name="LimitChange" component={Limitchange} options={{ headerShown: false }} />
+            <Stack.Screen name="AddChild" component={AddChild} options={{ headerShown: false }} />
           </Stack.Navigator>
         </NavigationContainer>
   );

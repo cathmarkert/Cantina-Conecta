@@ -28,7 +28,9 @@ const Pagamento = () => {
 
 
     <View style={styles.content}>
-      <Text style={styles.selectText}>Selecione o método de pagamento</Text>
+      <View style={styles.selectMethod}>
+        <Text style={styles.selectText}>Selecione para adicionar créditos</Text>
+      </View>
       <TouchableOpacity style={styles.paymentButton}>
         <View style={styles.iconContainer}>
           <Icon name="cc-apple-pay" size={70} style={styles.icon} />
