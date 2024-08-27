@@ -32,12 +32,6 @@ const Parent = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <Icon name="arrow-left" size={20} color="#000" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Cantina Conecta</Text>
-      </View>
 
       <View style={styles.profileContainer}>
         <Image source={{ uri: 'https://via.placeholder.com/150' }} style={styles.profileImage} />
@@ -45,26 +39,26 @@ const Parent = () => {
         <Text style={styles.totalAmount}>R$ 0,00</Text>
       </View>
 
-        <View style={styles.amountContainer}>
-          <View style={styles.creditBox}>
-            <Text style={styles.amountText}>R$ {formattedCredit.replace('.', ',')}</Text>
-          </View>
-          <TouchableOpacity onPress={() => navigation.navigate('Pagamento')}>
-            <Icon name="money-bill" size={24} color="#006600" />
-          </TouchableOpacity>
+      <View style={styles.amountContainer}>
+        <View style={styles.creditBox}>
+          <Text style={styles.amountText}>R$ {formattedCredit.replace('.', ',')}</Text>
         </View>
-
-        <FlatList
-          data={data}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-          style={styles.list}
-        />
-
-        <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('AddChild')}>
-          <Text style={styles.addButtonText}>Adicionar Dependente</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Pagamento')}>
+          <Icon name="money-bill" size={24} color="#006600" />
         </TouchableOpacity>
       </View>
+
+      <FlatList
+        data={data}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+        style={styles.list}
+      />
+
+      <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('AddChild')}>
+        <Text style={styles.addButtonText}>Adicionar Dependente </Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 

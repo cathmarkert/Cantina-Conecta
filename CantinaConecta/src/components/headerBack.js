@@ -19,16 +19,6 @@ const HeaderBack = () => {
 
       </View>
 
-      <View style={styles.containerSaldo}>
-        <View style={styles.amountContainer}>
-          <View style={styles.creditBox}>
-            <Text style={styles.amountText}>R$ {formattedCredit.replace('.', ',')}</Text>
-          </View>
-          <TouchableOpacity onPress={() => navigation.navigate('Pagamento')}>
-            <Icon name="plus" size={24} color="#0000FF" />
-          </TouchableOpacity>
-        </View>
-      </View>
     </View>
   );
 };

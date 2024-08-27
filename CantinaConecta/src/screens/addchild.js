@@ -1,4 +1,4 @@
-import React, { useState }  from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
@@ -13,14 +13,7 @@ const AddChild = () => {
     };
 
     return (
-
         <View style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-                    <Icon name="arrow-left" size={20} color="#000" />
-                </TouchableOpacity>
-                <Text style={styles.headerTitle}>Cantina Conecta</Text>
-            </View>
             <View style={styles.backgroundSection}>
 
                 <View style={styles.creditContainer}>
@@ -43,7 +36,7 @@ const AddChild = () => {
                         <View style={styles.checkbox}>
                             {isChecked && <View style={styles.checked} />}
                         </View>
-                        <Text style={styles.checkboxText}>Lanche avulso</Text>
+                        <Text style={styles.checkboxText}>Lanche avulso </Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.button}>

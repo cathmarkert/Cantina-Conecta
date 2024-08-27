@@ -8,14 +8,8 @@ import styles from './stylesChildchange';
 const Limitchange = () => {
     const navigation = useNavigation();
     return (
-
         <View style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-                    <Icon name="arrow-left" size={20} color="#000" />
-                </TouchableOpacity>
-                <Text style={styles.headerTitle}>Cantina Conecta</Text>
-            </View>
+
             <View style={styles.backgroundSection}>
 
                 <View style={styles.creditContainer}>

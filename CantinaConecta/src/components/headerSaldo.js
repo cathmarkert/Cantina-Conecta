@@ -13,7 +13,7 @@ const HeaderSaldo = () => {
       <View style={styles.containerHeader}>
 
         <Text style={styles.title}>Cantina Conecta</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Parent')}>
+        <TouchableOpacity onPress={() => navigation.navigate('PerfilStack')}>
           <Text style={styles.perfil}>
             <Icon name="user-circle" size={30} color="#000" style={styles.icon} />
           </Text>

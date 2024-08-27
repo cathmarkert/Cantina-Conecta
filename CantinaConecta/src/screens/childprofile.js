@@ -19,12 +19,6 @@ const Dependente = () => {
 
     return (
         <ScrollView style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-                    <Icon name="arrow-left" size={20} color="#000" />
-                </TouchableOpacity>
-                <Text style={styles.headerTitle}>Cantina Conecta</Text>
-            </View>
 
             <View style={styles.profileContainer}>
                 <Image source={{ uri: 'https://via.placeholder.com/150' }} style={styles.profileImage} />
@@ -47,7 +41,7 @@ const Dependente = () => {
                         <View style={styles.checkbox}>
                             {isChecked && <View style={styles.checked} />}
                         </View>
-                        <Text style={styles.checkboxText}>Lanche avulso</Text>
+                        <Text style={styles.checkboxText}>Lanche avulso </Text>
                     </TouchableOpacity>
                 </View>
             </View>

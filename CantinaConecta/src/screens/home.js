@@ -50,6 +50,7 @@ const Home = () => {
                             </View>
                         </View>
                     </View>
+                    <View style={styles.footerSpacer} />
                 </ScrollView>
                 <View style={styles.ContainerButton}>
                     <TouchableOpacity style={styles.selectButton} onPress={() => navigation.navigate('Selecionar')}>

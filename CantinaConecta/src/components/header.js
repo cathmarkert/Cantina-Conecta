@@ -12,7 +12,7 @@ const HeaderHome = () => {
 
         <Text style={styles.title}>Cantina Conecta</Text>
 
-        <TouchableOpacity onPress={() => navigation.navigate('Parent')}>
+        <TouchableOpacity onPress={() => navigation.navigate('PerfilStack')}>
           <Text>
             <Icon name="user-circle" size={30} color="#000" style={styles.icon} /> {/* Ícone de perfil */}
           </Text>

@@ -13,7 +13,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   scrollViewContent: {
-    flexGrow: 1,
+    backgroundColor: '#fff',
+  },
+  footerSpacer: {
+    height: 80,
+    backgroundColor: '#F2EFEF',
   },
   home: {
     backgroundColor: '#F2EFEF',
