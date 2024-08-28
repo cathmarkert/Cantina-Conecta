@@ -7,12 +7,14 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Login from './src/screens/login';
 import Home from './src/screens/home';
 import Extrato from './src/screens/extrato';
-import LanchesProgramados from './src/screens/lanchesProgramados'
+import ExtratoCompras from './src/screens/extratoCompras';
 import PaymentScreen from './src/screens/pagamento';
 import Parent from './src/screens/parentprofile';
 import Dependente from './src/screens/childprofile';
 import Limitchange from './src/screens/childchange';
 import AddChild from './src/screens/addchild';
+import LanchesProgramados from './src/screens/lanchesProgramados'
+import ListaPedidos from './src/screens/listaPedidos';
 
 import HeaderSaldo from './src/components/headerSaldo';
 import HeaderBack from './src/components/headerBack';
@@ -70,14 +72,14 @@ function HomeStackScreen() {
 			/>
 			<HomeStack.Screen
 				name="Extrato"
-				component={Extrato}
+				component={ExtratoCompras}
 				options={{
 					header: () => <HeaderBack />,
 				}}
 			/>
 			<HomeStack.Screen
 				name="LanchesProgramados"
-				component={LanchesProgramados}
+				component={ListaPedidos}
 				options={{
 					header: () => <HeaderBack />,
 				}}
