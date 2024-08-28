@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
         width: 20,
         height: 20,
         borderWidth: 2,
-        borderColor: '#001BFF', 
+        borderColor: '#001BFF',
         justifyContent: 'center',
         alignItems: 'center',
         marginRight: 8,
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
       checked: {
         width: 10,
         height: 10,
-        backgroundColor: '#001BFF',
+        backgroundColor: '#001BFF', 
       },
     checkboxText: {
         marginLeft: 8,

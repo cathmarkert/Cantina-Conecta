@@ -13,6 +13,8 @@ import Parent from './src/screens/parentprofile';
 import Dependente from './src/screens/childprofile';
 import Limitchange from './src/screens/childchange';
 import AddChild from './src/screens/addchild';
+import HomeOwner from './src/screens/homeowner';
+import AddAviso from './src/screens/addaviso';
 
 import HeaderSaldo from './src/components/headerSaldo';
 import HeaderBack from './src/components/headerBack';
@@ -69,6 +71,13 @@ function HomeStackScreen() {
 				}}
 			/>
 			<HomeStack.Screen
+				name="HomeOwner"
+				component={HomeOwner}
+				options={{
+					header: () => <HeaderSaldo />,
+				}}
+			/>
+			<HomeStack.Screen
 				name="Extrato"
 				component={Extrato}
 				options={{
@@ -86,6 +95,13 @@ function HomeStackScreen() {
 				name="PerfilStack"
 				component={PerfilStackScreen}
 				options={{ headerShown: false }}
+			/>
+			<HomeStack.Screen
+				name="Aviso"
+				component={AddAviso}
+				options={{
+					header: () => <HeaderBack />,
+				}}
 			/>
 		</HomeStack.Navigator>
 	);
@@ -164,6 +180,8 @@ export default function App() {
 			<Stack.Navigator>
 				<Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
 				<Stack.Screen name="HomeTab" component={HomeTabs} options={{ headerShown: false }} />
+				<Stack.Screen name="HomeOwner" component={HomeOwner} options={{ headerShown: false }} />
+				<Stack.Screen name="Aviso" component={AddAviso} options={{ headerShown: false }} />
 				{/* <Stack.Screen name="Parent" component={Parent} options={{ headerShown: false }} />
 				<Stack.Screen name="Dependente" component={Dependente} options={{ headerShown: false }} />
 				<Stack.Screen name="LimitChange" component={Limitchange} options={{ headerShown: false }} />

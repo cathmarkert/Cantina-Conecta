@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const Login = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -12,6 +13,7 @@ const Login = ({ navigation }) => {
             routes: [{ name: "HomeTab" }]
         })
     }
+    
 
     return <View style={stylesLogin.container}>
 
@@ -37,6 +39,11 @@ const Login = ({ navigation }) => {
         <TouchableOpacity style={stylesLogin.button} onPress={handleLogin}>
             <Text style={stylesLogin.buttonText}>Entrar </Text>
         </TouchableOpacity>
+
+        <TouchableOpacity style={stylesLogin.button} onPress={() => navigation.navigate('HomeOwner')}>
+            <Text style={stylesLogin.buttonText}>Entrar como Dono</Text>
+        </TouchableOpacity>
+
 
     </View>;
 }
