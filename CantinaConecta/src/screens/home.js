@@ -2,8 +2,7 @@ import * as React from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
-import HeaderSaldo from "../components/headerSaldo";
-import styles from "./stylesHome";
+import styles from "../stylesScreen/stylesHome";
 
 const Home = () => {
     const navigation = useNavigation();

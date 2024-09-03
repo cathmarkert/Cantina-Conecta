@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import { useNavigation } from '@react-navigation/native';
-import styles from './stylesAddaviso';
-import HeaderBack from '../components/headerBack';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import styles from '../stylesScreen/stylesAddaviso';
 
 
 const AddAviso = () => {
-    const navigation = useNavigation();
     const [isChecked, setIsChecked] = useState(false);
     const toggleCheckbox = () => {
         setIsChecked(!isChecked);
@@ -17,7 +13,6 @@ const AddAviso = () => {
     return (
 
         <View style={styles.container}>
-            <HeaderBack />
 
             <View style={styles.backgroundSection}>
 

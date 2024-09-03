@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import styles from './stylesChildchange';
+import styles from '../stylesScreen/stylesChildchange';
 
 
 const Limitchange = () => {

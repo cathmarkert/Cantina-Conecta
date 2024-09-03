@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
-import styles from './stylesAddchild';
+import styles from '../stylesScreen/stylesAddchild';
 
 
 const AddChild = () => {

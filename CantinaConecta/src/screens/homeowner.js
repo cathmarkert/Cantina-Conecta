@@ -2,34 +2,32 @@ import * as React from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
-import HeaderSaldo from "../components/headerSaldo";
-import styles from "./stylesHomeowner";
+import styles from "../stylesScreen/stylesHomeowner";
 
 const HomeOwner = () => {
     const navigation = useNavigation();
 
     return (
         <View style={styles.screen}>
-            <HeaderSaldo />
             <View style={styles.mainContent}>
                 <ScrollView contentContainerStyle={styles.scrollViewContent}>
                     <View style={styles.home}>
                         <View style={styles.actionsContainer}>
                             <TouchableOpacity
                                 style={styles.card}
-                                onPress={() => navigation.navigate('Extrato')}
+                                onPress={() => navigation.navigate('ExtratoCompras')}
                             >
                                 <Icon name="copy" size={40} color={'#0000FF'} />
-                                <Text>Extrato</Text>
+                                <Text>Extrato </Text>
 
                             </TouchableOpacity>
 
                             <TouchableOpacity
                                 style={styles.card}
-                                onPress={() => navigation.navigate('LanchesProgramados')}
+                                onPress={() => navigation.navigate('ListaPedidos')}
                             >
                                 <Icon name="check-circle" size={40} color={'#0000FF'} />
-                                <Text style={styles.cartTitle}>Pedidos</Text>
+                                <Text style={styles.cartTitle}>Pedidos </Text>
                             </TouchableOpacity>
 
                         </View>

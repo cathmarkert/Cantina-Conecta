@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import styles from './stylesPagamento';
+import styles from '../stylesScreen/stylesPagamento';
 
 const Pagamento = () => {
 

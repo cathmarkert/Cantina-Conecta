@@ -1,8 +1,8 @@
 import React from "react";
-import { View, Text, Image, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
-import styles from "./stylesParentprofile";
+import styles from "../stylesScreen/stylesParentprofile";
 
 const data = [
   {

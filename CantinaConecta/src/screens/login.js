@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
-import { StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import styles from '../stylesScreen/stylesLogin';
 
 const Login = ({ navigation }) => {
     const [email, setEmail] = useState('');
@@ -10,18 +9,23 @@ const Login = ({ navigation }) => {
     const handleLogin = () => {
         navigation.reset({
             index: 0,
-            routes: [{ name: "HomeTab" }]
+            routes: [{ name: "HomeTabs" }]
         })
     }
-    
+    const handleOwnerLogin = () => {
+        navigation.reset({
+            index: 0,
+            routes: [{ name: "HomeOwnerTabs" }]
+        })
+    }
 
-    return <View style={stylesLogin.container}>
+    return <View style={styles.container}>
 
-        <Text style={stylesLogin.textTitle}> Bem-Vindo ao Cantina Conecta! </Text>
-        <Text style={stylesLogin.textSubTitle}> Insira seus dados para acessar a conta. </Text>
+        <Text style={styles.textTitle}> Bem-Vindo ao Cantina Conecta! </Text>
+        <Text style={styles.textSubTitle}> Insira seus dados para acessar a conta. </Text>
 
         <TextInput
-            style={stylesLogin.input}
+            style={styles.input}
             placeholder='Email'
             value={email}
             onChangeText={text => setEmail(text)}
@@ -29,69 +33,23 @@ const Login = ({ navigation }) => {
         />
 
         <TextInput
-            style={stylesLogin.input}
+            style={styles.input}
             placeholder='Senha'
             value={senha}
             onChangeText={text => setSenha(text)}
             secureTextEntry={true}
         />
 
-        <TouchableOpacity style={stylesLogin.button} onPress={handleLogin}>
-            <Text style={stylesLogin.buttonText}>Entrar </Text>
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+            <Text style={styles.buttonText}>Entrar </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={stylesLogin.button} onPress={() => navigation.navigate('HomeOwner')}>
-            <Text style={stylesLogin.buttonText}>Entrar como Dono</Text>
+        <TouchableOpacity style={styles.button} onPress={handleOwnerLogin}>
+            <Text style={styles.buttonText}>Entrar como Dono </Text>
         </TouchableOpacity>
 
 
     </View>;
 }
-
-const stylesLogin = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-    },
-    textTitle: {
-        color: '#000',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 20,
-        marginVertical: 10,
-    },
-    textSubTitle: {
-        color: '#808080',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 50,
-    },
-    input: {
-        width: 300,
-        height: 40,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        borderRadius: 10,
-        marginBottom: 20,
-        paddingHorizontal: 10,
-    },
-    button: {
-        width: 200,
-        height: 40,
-        backgroundColor: '#050C9C',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 10,
-        marginHorizontal: 50,
-        marginVertical: 10,
-    },
-    buttonText: {
-        color: '#FFF',
-        fontSize: 16,
-    },
-
-});
 
 export default Login;

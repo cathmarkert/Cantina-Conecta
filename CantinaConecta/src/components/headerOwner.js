@@ -2,9 +2,9 @@ import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { useNavigation } from '@react-navigation/native';
-import styles from '../stylesComponents/stylesHeaderSaldo';
+import styles from '../stylesComponents/stylesHeaderOwner';
 
-const HeaderSaldo = () => {
+const HeaderOwner = () => {
 	const navigation = useNavigation();
 	const formattedCredit = "1234.56";
 
@@ -13,11 +13,7 @@ const HeaderSaldo = () => {
 			<View style={styles.containerHeader}>
 
 				<Text style={styles.title}>Cantina Conecta</Text>
-				<TouchableOpacity onPress={() => navigation.navigate('PerfilStack')}>
-					<Text style={styles.perfil}>
-						<Icon name="user-circle" size={30} color="#000" style={styles.icon} />
-					</Text>
-				</TouchableOpacity>
+
 			</View>
 
 			<View style={styles.containerSaldo}>
@@ -25,7 +21,7 @@ const HeaderSaldo = () => {
 					<View style={styles.creditBox}>
 						<Text style={styles.amountText}>R$ {formattedCredit.replace('.', ',')}</Text>
 					</View>
-					<TouchableOpacity onPress={() => navigation.navigate('Pagamento')}>
+					<TouchableOpacity onPress={() => navigation.navigate('Programados')}>
 						<Icon name="plus" size={24} color="#0000FF" />
 					</TouchableOpacity>
 				</View>
@@ -34,4 +30,4 @@ const HeaderSaldo = () => {
 	);
 };
 
-export default HeaderSaldo;
+export default HeaderOwner;

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { SectionList, View, Text, TouchableOpacity } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import styles from './stylesListaPedidos';
+import styles from '../stylesScreen/stylesListaPedidos';
 
 const ListaPedidos = () => {
 	const lanchesData = [

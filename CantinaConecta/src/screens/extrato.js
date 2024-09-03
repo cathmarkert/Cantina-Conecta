@@ -1,7 +1,6 @@
 import * as React from "react";
 import { SectionList, View, Text } from "react-native";
-import HeaderHome from "../components/header";
-import styles from "./stylesExtrato";
+import styles from "../stylesScreen/stylesExtrato";
 
 const Extrato = () => {
     const data = [

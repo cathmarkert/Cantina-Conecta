@@ -1,9 +1,6 @@
 import React from 'react';
-import { View, Text, FlatList, StyleSheet, Dimensions } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import styles from './stylesExtratochild';
-
-const screenWidth = Dimensions.get('window').width;
+import { View, Text, FlatList, Dimensions } from 'react-native';
+import styles from '../stylesScreen/stylesExtratochild';
 
 const ExtratoChild = ({ route }) => {
     const { transactions } = route.params;

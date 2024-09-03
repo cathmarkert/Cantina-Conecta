@@ -1,7 +1,6 @@
 import * as React from "react";
 import { SectionList, View, Text, TouchableOpacity } from "react-native";
-import HeaderHome from "../components/header";
-import styles from "./stylesExtratoCompras";
+import styles from "../stylesScreen/stylesExtratoCompras";
 import { useNavigation } from "@react-navigation/native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
