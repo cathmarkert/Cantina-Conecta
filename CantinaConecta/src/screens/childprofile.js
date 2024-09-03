@@ -60,7 +60,9 @@ const Dependente = () => {
                 </View>
             </View>
 
-            <TouchableOpacity style={styles.viewStatementButton}>
+            <TouchableOpacity
+                style={styles.viewStatementButton}
+                onPress={() => navigation.navigate('ExtratoChild', { transactions: dependent.transactions })}>
                 <Text style={styles.viewStatementText}>Visualizar extrato</Text>
                 <Icon name="arrow-right" size={20} color="#000" />
             </TouchableOpacity>

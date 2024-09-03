@@ -15,6 +15,7 @@ import Limitchange from './src/screens/childchange';
 import AddChild from './src/screens/addchild';
 import HomeOwner from './src/screens/homeowner';
 import AddAviso from './src/screens/addaviso';
+import ExtratoChild from './src/screens/extratochild';
 
 import HeaderSaldo from './src/components/headerSaldo';
 import HeaderBack from './src/components/headerBack';
@@ -53,6 +54,14 @@ function PerfilStackScreen() {
 			<PerfilStack.Screen
 				name="AddChild"
 				component={AddChild}
+				options={{
+					header: () => <HeaderBack />,
+				}}
+			/>
+
+			<PerfilStack.Screen
+				name="ExtratoChild"
+				component={ExtratoChild}
 				options={{
 					header: () => <HeaderBack />,
 				}}
@@ -182,6 +191,7 @@ export default function App() {
 				<Stack.Screen name="HomeTab" component={HomeTabs} options={{ headerShown: false }} />
 				<Stack.Screen name="HomeOwner" component={HomeOwner} options={{ headerShown: false }} />
 				<Stack.Screen name="Aviso" component={AddAviso} options={{ headerShown: false }} />
+				<Stack.Screen name="ExtratoChild" component={ExtratoChild} options={{ headerShown: false }} />
 				{/* <Stack.Screen name="Parent" component={Parent} options={{ headerShown: false }} />
 				<Stack.Screen name="Dependente" component={Dependente} options={{ headerShown: false }} />
 				<Stack.Screen name="LimitChange" component={Limitchange} options={{ headerShown: false }} />
