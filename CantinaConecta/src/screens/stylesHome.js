@@ -3,6 +3,10 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 
+const scale = width / 375; 
+
+const scaleFont = (size) => Math.round(size * scale);
+
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
@@ -16,26 +20,27 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   footerSpacer: {
-    height: 80,
+    height: 80 * scale, 
     backgroundColor: '#F2EFEF',
   },
   home: {
     backgroundColor: '#F2EFEF',
     flex: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 20,
+    paddingHorizontal: 16 * scale,
+    paddingVertical: 20 * scale,
   },
   actionsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginVertical: 10,
+    marginVertical: 10 * scale,
   },
   card: {
     backgroundColor: '#fff',
-    padding: 20,
-    borderRadius: 8,
+    fontWeight: 'bold',
+    padding: 20 * scale,
+    borderRadius: 8 * scale,
     alignItems: 'center',
-    width: width * 0.4,
+    width: width * 0.4, 
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
@@ -43,11 +48,11 @@ const styles = StyleSheet.create({
     elevation: 15,
   },
   noticeContainer: {
-    padding: 20,
+    padding: 20 * scale,
     backgroundColor: '#F8F8FF',
-    borderRadius: 8,
-    marginHorizontal: 16,
-    marginVertical: 10,
+    borderRadius: 8 * scale,
+    marginHorizontal: 16 * scale,
+    marginVertical: 10 * scale,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -57,15 +62,15 @@ const styles = StyleSheet.create({
   statsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: 10,
-    paddingHorizontal: 16,
+    marginVertical: 10 * scale,
+    paddingHorizontal: 16 * scale,
   },
   stat: {
     alignItems: 'center',
     backgroundColor: '#F8F8FF',
-    padding: 20,
-    borderRadius: 8,
-    width: '48%',
+    padding: 20 * scale,
+    borderRadius: 8 * scale,
+    width: '48%', // Use a percentage for width
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
@@ -74,45 +79,46 @@ const styles = StyleSheet.create({
   },
   statNumber: {
     alignItems: 'center',
-    fontSize: 20,
+    fontSize: scaleFont(20),
     fontWeight: 'bold',
   },
   statText: {
     justifyContent: 'center',
-    fontSize: 16,
+    fontSize: scaleFont(16),
     fontWeight: 'bold',
   },
   selectButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 15,
+    padding: 15 * scale,
     backgroundColor: '#0000FF',
-    borderRadius: 30,
+    borderRadius: 30 * scale,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 5,
     elevation: 15,
-    margin: 8,
+    margin: 8 * scale,
   },
   selectButtonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: scaleFont(14),
     fontWeight: 'bold',
-    marginLeft: 10,
+    marginLeft: 10 * scale,
   },
   ContainerButton: {
     position: 'absolute',
-    bottom: 5,
-    right: 15,
+    bottom: 5 * scale,
+    right: 10 * scale,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    marginTop: 10 * scale,
   },
   hall: {
     backgroundColor: '#87CEFA',
-    borderRadius: 8,
+    borderRadius: 8 * scale,
   },
 });
 

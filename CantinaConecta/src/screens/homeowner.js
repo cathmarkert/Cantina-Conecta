@@ -55,7 +55,7 @@ const HomeOwner = () => {
                 </ScrollView>
                 <View style={styles.ContainerButton}>
                     <TouchableOpacity style={styles.selectButton} onPress={() => navigation.navigate('Aviso')}>
-                        <Icon name="brush" color="#fff" size={20} />
+                        <Icon name="pen" color="#fff" size={20} />
                         <Text style={styles.selectButtonText}>Adicionar aviso</Text>
                     </TouchableOpacity>
                 </View>

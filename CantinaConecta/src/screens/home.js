@@ -10,7 +10,6 @@ const Home = () => {
 
     return (
         <View style={styles.screen}>
-            {/* <HeaderSaldo /> */}
             <View style={styles.mainContent}>
                 <ScrollView contentContainerStyle={styles.scrollViewContent}>
                     <View style={styles.home}>
@@ -50,14 +49,17 @@ const Home = () => {
                             </View>
                         </View>
                     </View>
+
                     <View style={styles.footerSpacer} />
+
+                    <View style={styles.ContainerButton}>
+                        <TouchableOpacity style={styles.selectButton} onPress={() => navigation.navigate('Selecionar')}>
+                            <Icon name="brush" color="#fff" size={20} />
+                            <Text style={styles.selectButtonText}>Selecionar Lanche</Text>
+                        </TouchableOpacity>
+                    </View>
+        
                 </ScrollView>
-                <View style={styles.ContainerButton}>
-                    <TouchableOpacity style={styles.selectButton} onPress={() => navigation.navigate('Selecionar')}>
-                        <Icon name="brush" color="#fff" size={20} />
-                        <Text style={styles.selectButtonText}>Selecionar Lanche</Text>
-                    </TouchableOpacity>
-                </View>
             </View>
         </View>
     );

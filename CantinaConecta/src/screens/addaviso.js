@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-nativ
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
 import styles from './stylesAddaviso';
+import HeaderBack from '../components/headerBack';
 
 
 const AddAviso = () => {
@@ -12,8 +13,12 @@ const AddAviso = () => {
         setIsChecked(!isChecked);
     };
 
+
     return (
+
         <View style={styles.container}>
+            <HeaderBack />
+
             <View style={styles.backgroundSection}>
 
                 <View style={styles.creditContainer}>
@@ -22,7 +27,7 @@ const AddAviso = () => {
                         style={styles.input}
                         placeholder="Digite o aviso"
                         placeholderTextColor="#B0B0B0"
-                        editable={false}
+                        editable={true}
                     />
 
                     <TouchableOpacity style={styles.checkboxContainer} onPress={toggleCheckbox}>
