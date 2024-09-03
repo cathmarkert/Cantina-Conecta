@@ -113,12 +113,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginRight: 8,
         backgroundColor: '#FFFFFF', // White background for the checkbox
-      },
-      checked: {
+    },
+    checked: {
         width: 10,
         height: 10,
         backgroundColor: '#001BFF', // Checked state color
-      },
+    },
     checkboxText: {
         marginLeft: 8,
         fontSize: 14,

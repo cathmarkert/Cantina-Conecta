@@ -1,15 +1,16 @@
 import * as React from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
 import HeaderSaldo from "../components/headerSaldo";
-import styles from "./stylesHome";
+import styles from "./stylesHomeowner";
 
-const Home = () => {
+const HomeOwner = () => {
     const navigation = useNavigation();
 
     return (
         <View style={styles.screen}>
+            <HeaderSaldo />
             <View style={styles.mainContent}>
                 <ScrollView contentContainerStyle={styles.scrollViewContent}>
                     <View style={styles.home}>
@@ -27,43 +28,41 @@ const Home = () => {
                                 style={styles.card}
                                 onPress={() => navigation.navigate('LanchesProgramados')}
                             >
-                                <Icon name="restaurant" size={40} color={'#0000FF'} />
-                                <Text style={styles.cartTitle}>Lanches Programados</Text>
+                                <Icon name="check-circle" size={40} color={'#0000FF'} />
+                                <Text style={styles.cartTitle}>Pedidos</Text>
                             </TouchableOpacity>
 
                         </View>
                         <View style={styles.hall}>
-                            <View style={styles.noticeContainer}>
-                                <Text style={styles.statNumber}>Avisos:</Text>
-                                <Text>Sem avisos por enquanto</Text>
-                            </View>
                             <View style={styles.statsContainer}>
                                 <View style={styles.stat}>
                                     <Text style={styles.statText}>Lanches comprados 30 dias</Text>
-                                    <Text style={styles.statNumber}>44</Text>
+                                    <Text style={styles.statNumber}>150</Text>
                                 </View>
                                 <View style={styles.stat}>
-                                    <Text style={styles.statText}>Valor gasto 30 dias</Text>
-                                    <Text style={styles.statNumber}>R$150,45</Text>
+                                    <Text style={styles.statText}>Produto mais pedido 30 dias</Text>
+                                    <Text style={styles.statNumber}>Sanduíche Natural</Text>
                                 </View>
                             </View>
                         </View>
+
+                        <TouchableOpacity style={styles.viewStatementButton}>
+                            <Text style={styles.viewStatementText}>Visualizar extrato</Text>
+                            <Icon name="arrow-right" size={20} color="#000" />
+                        </TouchableOpacity>
                     </View>
-
                     <View style={styles.footerSpacer} />
-
                 </ScrollView>
-
                 <View style={styles.ContainerButton}>
-                    <TouchableOpacity style={styles.selectButton} onPress={() => navigation.navigate('Selecionar')}>
-                        <Icon name="brush" color="#fff" size={20} />
-                        <Text style={styles.selectButtonText}>Selecionar Lanche</Text>
+                    <TouchableOpacity style={styles.selectButton} onPress={() => navigation.navigate('Aviso')}>
+                        <Icon name="pen" color="#fff" size={20} />
+                        <Text style={styles.selectButtonText}>Adicionar aviso</Text>
                     </TouchableOpacity>
                 </View>
-
             </View>
         </View>
+
     );
 };
 
-export default Home;
+export default HomeOwner;

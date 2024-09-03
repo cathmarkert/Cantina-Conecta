@@ -5,8 +5,34 @@ import { useNavigation } from '@react-navigation/native';
 import styles from "./stylesParentprofile";
 
 const data = [
-  { id: '1', name: 'José', amount: 'R$ 0,00', registration: '10100012', lanches: '21', valorGasto: 'R$100,45' },
-  { id: '2', name: 'Maria', amount: 'R$ 0,00', registration: '10100013', lanches: '15', valorGasto: 'R$75,30' },
+  {
+    id: '1',
+    name: 'José',
+    amount: 'R$ 0,00',
+    registration: '10100012',
+    lanches: '21',
+    valorGasto: 'R$100,45',
+    transactions: [
+      { id: '1', type: 'debit', description: 'Lanche', amount: 'R$ 4,50', date: '2024-08-01' },
+      { id: '2', type: 'credit', description: 'Crédito', amount: 'R$ 50,00', date: '2024-08-02' },
+      { id: '3', type: 'debit', description: 'Lanche', amount: 'R$ 4,50', date: '2024-08-03' },
+      { id: '4', type: 'credit', description: 'Crédito', amount: 'R$ 20,00', date: '2024-08-04' },
+    ],
+  },
+  {
+    id: '2',
+    name: 'Maria',
+    amount: 'R$ 0,00',
+    registration: '10100013',
+    lanches: '15',
+    valorGasto: 'R$75,30',
+    transactions: [
+      { id: '1', type: 'debit', description: 'Lanche', amount: 'R$ 3,50', date: '2024-08-01' },
+      { id: '2', type: 'credit', description: 'Crédito', amount: 'R$ 40,00', date: '2024-08-02' },
+      { id: '3', type: 'debit', description: 'Lanche', amount: 'R$ 5,00', date: '2024-08-03' },
+      { id: '4', type: 'credit', description: 'Crédito', amount: 'R$ 30,00', date: '2024-08-04' },
+    ],
+  },
 ];
 
 const formattedCredit = "1234.56";

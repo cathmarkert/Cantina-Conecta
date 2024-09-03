@@ -13,6 +13,9 @@ import Parent from './src/screens/parentprofile';
 import Dependente from './src/screens/childprofile';
 import Limitchange from './src/screens/childchange';
 import AddChild from './src/screens/addchild';
+import HomeOwner from './src/screens/homeowner';
+import AddAviso from './src/screens/addaviso';
+import ExtratoChild from './src/screens/extratochild';
 import LanchesProgramados from './src/screens/lanchesProgramados'
 import ListaPedidos from './src/screens/listaPedidos';
 
@@ -57,6 +60,14 @@ function PerfilStackScreen() {
 					header: () => <HeaderBack />,
 				}}
 			/>
+
+			<PerfilStack.Screen
+				name="ExtratoChild"
+				component={ExtratoChild}
+				options={{
+					header: () => <HeaderBack />,
+				}}
+			/>
 		</PerfilStack.Navigator>
 	);
 }
@@ -66,6 +77,13 @@ function HomeStackScreen() {
 			<HomeStack.Screen
 				name="Home"
 				component={Home}
+				options={{
+					header: () => <HeaderSaldo />,
+				}}
+			/>
+			<HomeStack.Screen
+				name="HomeOwner"
+				component={HomeOwner}
 				options={{
 					header: () => <HeaderSaldo />,
 				}}
@@ -88,6 +106,13 @@ function HomeStackScreen() {
 				name="PerfilStack"
 				component={PerfilStackScreen}
 				options={{ headerShown: false }}
+			/>
+			<HomeStack.Screen
+				name="Aviso"
+				component={AddAviso}
+				options={{
+					header: () => <HeaderBack />,
+				}}
 			/>
 		</HomeStack.Navigator>
 	);
@@ -166,6 +191,9 @@ export default function App() {
 			<Stack.Navigator>
 				<Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
 				<Stack.Screen name="HomeTab" component={HomeTabs} options={{ headerShown: false }} />
+				{/* <Stack.Screen name="HomeOwner" component={HomeOwner} options={{ headerShown: false }} />
+				<Stack.Screen name="Aviso" component={AddAviso} options={{ headerShown: false }} />
+				<Stack.Screen name="ExtratoChild" component={ExtratoChild} options={{ headerShown: false }} /> */}
 				{/* <Stack.Screen name="Parent" component={Parent} options={{ headerShown: false }} />
 				<Stack.Screen name="Dependente" component={Dependente} options={{ headerShown: false }} />
 				<Stack.Screen name="LimitChange" component={Limitchange} options={{ headerShown: false }} />
