@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 // Telas
 import Extrato from '../screens/extrato';
 import PaymentScreen from '../screens/pagamento';
+import ListaPedidos from '../screens/listaPedidos';
 
 // Rotas
 import HomeOwnerStack from './homeOwnerStack';
@@ -64,7 +65,7 @@ const HomeOwnerTabs = () => {
             />
             <Tab.Screen
                 name="Programados"
-                component={PaymentScreen}
+                component={ListaPedidos}
                 options={{
                     tabBarLabel: 'Programados',
                     header: () => <Header />,

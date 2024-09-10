@@ -44,17 +44,17 @@ const HomeOwner = () => {
                             </View>
                         </View>
 
-                        <TouchableOpacity style={styles.viewStatementButton}>
-                            <Text style={styles.viewStatementText}>Visualizar extrato</Text>
+                        <TouchableOpacity style={styles.viewStatementButton} onPress={() => navigation.navigate('Aviso')}>
+                            <Text style={styles.viewStatementText}>Adicionar Aviso</Text>
                             <Icon name="arrow-right" size={20} color="#000" />
                         </TouchableOpacity>
                     </View>
                     <View style={styles.footerSpacer} />
                 </ScrollView>
                 <View style={styles.ContainerButton}>
-                    <TouchableOpacity style={styles.selectButton} onPress={() => navigation.navigate('Aviso')}>
+                    <TouchableOpacity style={styles.selectButton} onPress={() => navigation.navigate('AddCompra')}>
                         <Icon name="pen" color="#fff" size={20} />
-                        <Text style={styles.selectButtonText}>Adicionar aviso</Text>
+                        <Text style={styles.selectButtonText}>Adicionar Compra</Text>
                     </TouchableOpacity>
                 </View>
             </View>

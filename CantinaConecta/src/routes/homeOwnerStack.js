@@ -6,6 +6,7 @@ import HomeOwner from '../screens/homeowner';
 import ExtratoCompras from '../screens/extratoCompras';
 import ListaPedidos from '../screens/listaPedidos';
 import AddAviso from '../screens/addaviso';
+import ProductScreen from '../screens/ownerpayment';
 
 
 // Headers
@@ -48,6 +49,15 @@ const HomeOwnerStack = () => {
                     header: () => <HeaderBack />,
                 }}
             />
+
+            <HomeStack.Screen
+                name="AddCompra"
+                component={ProductScreen}
+                options={{
+                    header: () => <HeaderBack />,
+                }}
+            />
+
         </HomeStack.Navigator>
     );
 }
