@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Home from '../screens/home';
 import Extrato from '../screens/extrato';
 import LanchesProgramados from '../screens/lanchesProgramados';
+import Pedido from '../screens/pedidopai';
 
 
 // Rotas

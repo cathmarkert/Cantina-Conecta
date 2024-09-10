@@ -5,12 +5,14 @@ import Icon from 'react-native-vector-icons/Ionicons';
 // Telas
 import Extrato from '../screens/extrato';
 import PaymentScreen from '../screens/pagamento';
+import Pedido from '../screens/pedidopai';
 
 // Rotas
 import HomeStackScreen from './homeStack';
 
 // Headers
 import HeaderPerfil from '../components/headerPerfil';
+import HeaderSaldo from '../components/headerSaldo';
 
 const Tab = createBottomTabNavigator();
 
@@ -47,10 +49,10 @@ const HomeTabs = () => {
         >
             <Tab.Screen
                 name="Selecionar"
-                component={Extrato}
+                component={Pedido}
                 options={{
                     tabBarLabel: 'Selecionar',
-                    header: () => <HeaderPerfil />,
+                    header: () => <HeaderSaldo />,
                 }}
             />
             <Tab.Screen

@@ -34,7 +34,7 @@ const Home = () => {
                         <View style={styles.hall}>
                             <View style={styles.noticeContainer}>
                                 <Text style={styles.statNumber}>Avisos:</Text>
-                                <Text>Sem avisos por enquanto</Text>
+                                <Text>Sem avisos por enquanto.</Text>
                             </View>
                             <View style={styles.statsContainer}>
                                 <View style={styles.stat}>

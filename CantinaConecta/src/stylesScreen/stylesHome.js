@@ -10,7 +10,7 @@ const scaleFont = (size) => Math.round(size * scale);
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#F2EFEF',
   },
   mainContent: {
     flex: 1,
