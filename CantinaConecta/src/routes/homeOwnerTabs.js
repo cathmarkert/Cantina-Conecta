@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Extrato from '../screens/extrato';
 import PaymentScreen from '../screens/pagamento';
 import ListaPedidos from '../screens/listaPedidos';
+import Estoque from '../screens/estoque';
 
 // Rotas
 import HomeOwnerStack from './homeOwnerStack';
@@ -49,7 +50,7 @@ const HomeOwnerTabs = () => {
         >
             <Tab.Screen
                 name="Estoque"
-                component={Extrato}
+                component={Estoque}
                 options={{
                     tabBarLabel: 'Estoque',
                     header: () => <Header />,
