@@ -56,7 +56,7 @@ export default StyleSheet.create({
         marginLeft: width * 0.5,
         borderRadius: 10,
         alignItems: 'center',
-        marginTop: 2,
+        marginTop: 5,
         marginBottom: 25,
     },
     buttonText: {
@@ -80,5 +80,37 @@ export default StyleSheet.create({
         flex: 1,
         padding: 2,
     },
-
+    inputContainer: {
+        marginBottom: 20,
+    },
+    label: {
+        fontSize: 16,
+        marginBottom: 10,
+    },
+    checkboxRow: {
+        flexDirection: 'row', 
+        justifyContent: 'space-around', 
+    },
+    checkboxContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 10,
+    },
+    checkbox: {
+        width: 24,
+        height: 24,
+        borderRadius: 4,
+        borderWidth: 1,
+        borderColor: '#000',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 10,
+    },
+    checkboxSelected: {
+        backgroundColor: 'blue', // Change to any color you prefer
+        borderColor: 'blue',
+    },
+    checkboxLabel: {
+        fontSize: 16,
+    },
 });

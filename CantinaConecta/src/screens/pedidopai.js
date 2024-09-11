@@ -8,52 +8,90 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 const { width } = Dimensions.get('window');
 
 const Pedido = () => {
-    const [isModalVisible, setModalVisible] = useState(false);
-    const [selectedChild, setSelectedChild] = useState(null);
-    const [comidas] = useState(['Item 1', 'Item 2', 'Item 3']);
-    const [bebidas] = useState(['Item 1', 'Item 2', 'Item 3']);
-    const children = ['Child 1', 'Child 2', 'Child 3']; // List of children to select
+    const [comidas] = useState(['Tapioca', 'Sanduíche', 'Salgado']);
+    const [bebidas] = useState(['Água', 'Achocolatado', 'Suco Natural']);
 
     const renderItem = ({ item }) => (
         <View style={styles.carouselItem}>
             <Text style={styles.carouselText}>{item}</Text>
         </View>
     );
+    const [selectedTime, setSelectedTime] = useState([]);
 
-    const openChildModal = () => {
-        setModalVisible(true);
+    const time = [
+        {id: 1, name: '9:00'},
+        {id: 2, name: '10:30'},
+        {id: 3, name: '11:00'},
+    ];
+
+    const selectTime = (item) => {
+        setSelectedTime(item.id);
     };
 
-    const selectChild = (child) => {
-        setSelectedChild(child);
-        setModalVisible(false);
+    const [selectedChild, setSelectedChild] = useState(null);
+
+    const children = [
+        { id: 1, name: 'Ana' },
+        { id: 2, name: 'João' },
+        { id: 3, name: 'Maria' }
+    ]; 
+
+    const selectChild = (item) => {
+        setSelectedChild(item.id);
     };
+
 
     return (
         <ScrollView style={styles.container}>
 
             <View style={styles.inputContainer}>
-                <Text style={styles.label}>Filho:</Text>
-                <TouchableOpacity onPress={openChildModal}>
-                    <TextInput
-                        style={[styles.input, { width: width * 0.9 }]}
-                        placeholder="Selecionar Filho"
-                        value={selectedChild}
-                        editable={false} // Disable manual input, it's only selectable via modal
-                    />
-                </TouchableOpacity>
+                <Text style={styles.sectionTitle}>Selecionar Filho:</Text>
+                <View style={styles.checkboxRow}>
+                    {children.map((item) => (
+                        <TouchableOpacity
+                            key={item.id}
+                            style={styles.checkboxContainer}
+                            onPress={() => selectChild(item)}
+                        >
+                            <View
+                                style={[
+                                    styles.checkbox,
+                                    selectedChild === item.id && styles.checkboxSelected
+                                ]}
+                            >
+                                {selectedChild === item.id && (
+                                    <Icon name="check" size={14} color="#fff" />
+                                )}
+                            </View>
+                            <Text style={styles.checkboxLabel}>{item.name}</Text>
+                        </TouchableOpacity>
+                    ))}
+                </View>
             </View>
 
             <View style={styles.inputContainer}>
-                <Text style={styles.label}>Horário de Entrega:</Text>
-                <TouchableOpacity onPress={openChildModal}>
-                    <TextInput
-                        style={[styles.input, { width: width * 0.9 }]}
-                        placeholder="Selecionar Horário de Entrega"
-                        value={selectedChild}
-                        editable={false} // Disable manual input, it's only selectable via modal
-                    />
-                </TouchableOpacity>
+                <Text style={styles.sectionTitle}>Selecionar Horário:</Text>
+                <View style={styles.checkboxRow}>
+                    {time.map((item) => (
+                        <TouchableOpacity
+                            key={item.id}
+                            style={styles.checkboxContainer}
+                            onPress={() => selectTime(item)}
+                        >
+                            <View
+                                style={[
+                                    styles.checkbox,
+                                    selectedTime === item.id && styles.checkboxSelected
+                                ]}
+                            >
+                                {selectedTime === item.id && (
+                                    <Icon name="check" size={14} color="#fff" />
+                                )}
+                            </View>
+                            <Text style={styles.checkboxLabel}>{item.name}</Text>
+                        </TouchableOpacity>
+                    ))}
+                </View>
             </View>
 
 
@@ -77,8 +115,6 @@ const Pedido = () => {
                 />
             </View>
 
-
-            {/* Confirm Button */}
             <TouchableOpacity style={styles.button} onPress={() => { }}>
                 <Text style={styles.buttonText}>Confirmar</Text>
             </TouchableOpacity>
