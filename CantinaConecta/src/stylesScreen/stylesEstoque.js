@@ -51,11 +51,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingVertical: 8,
         paddingHorizontal: 5,
-        backgroundColor: '#fff', // Background color of each product row
+        backgroundColor: '#fff', 
         borderRadius: 8,
-        borderColor: '#ddd', // Optional border color for visual separation
+        borderColor: '#ddd',
         borderWidth: 1,
-        marginBottom: 8, // Space between rows
+        marginBottom: 8, 
     },
     productLeft: {
         flexDirection: 'row',
@@ -79,12 +79,19 @@ const styles = StyleSheet.create({
     },
     productIcons: {
         flexDirection: 'row',
-        alignItems: 'flex-start',
+        justifyContent: 'center', 
+    },
+    pictureIcon: {
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        marginLeft: 0.03 * width,
+        padding: 0.01 * width,
     },
     iconColumn: {
         flexDirection: 'column',
-        justifyContent: 'space-between',
+        justifyContent: 'center', 
         marginRight: 8,
+        padding: 0.01 * width,
     },
     icon: {
         width: 20,

@@ -25,7 +25,11 @@ const Pedido = () => {
     ];
 
     const selectTime = (item) => {
-        setSelectedTime(item.id);
+        if (selectedTime === item.id) {
+            setSelectedTime(null);
+        } else {
+            setSelectedTime(item.id);
+        }
     };
 
     const [selectedChild, setSelectedChild] = useState(null);
@@ -37,7 +41,11 @@ const Pedido = () => {
     ]; 
 
     const selectChild = (item) => {
-        setSelectedChild(item.id);
+        if (selectedChild === item.id) {
+            setSelectedChild(null); 
+        } else {
+            setSelectedChild(item.id); 
+        }
     };
 
 
