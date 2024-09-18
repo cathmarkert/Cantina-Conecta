@@ -1,67 +1,45 @@
-import * as React from "react";
-import { SectionList, View, Text } from "react-native";
+import React, { useState, useEffect } from "react";
+import { SectionList, View, Text, Alert } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from '../stylesScreen/stylesLanchesProgramados';
+import { fetchOrdersForDependent } from '../utils/api'; // Import the fetch function
 
-const LanchesProgramados = () => {
-    const lanchesData = [
-        {
-            title: "Lanches Programados",
-            data: [
-                {
-                    id: "1",
-                    data: "24/08/2024",
-                    nome: "José",
-                    tipoLanche: "Lanche Selecionado",
-                    horario: "12:00",
-                    itens: ["1x Sanduíche Natural", "2x Água Mineral"]
-                },
-            ],
-        },
-        {
-            title: "Lanches Programados",
-            data: [
-                {
-                    id: "2",
-                    data: "25/08/2024",
-                    nome: "Pedro",
-                    tipoLanche: "Lanche Selecionado",
-                    horario: "12:00",
-                    itens: ["1x Suco de Laranja", "1x Bolo de Cenoura"]
-                },
-            ],
-        },
-        {
-            title: "Lanches Programados",
-            data: [
-                {
-                    id: "3",
-                    data: "24/08/2024",
-                    nome: "Ana",
-                    tipoLanche: "Lanche Livre",
-                    horario: "11:00",
-                    itens: []
-                },
-            ],
-        },
-    ];
+const LanchesProgramados = ({ route }) => {
+    const { dependentId } = route.params || {}; // Get the dependent ID from route params
 
-    // Função para converter data e horário em um objeto Date
+    const [ordersData, setOrdersData] = useState([]);
+
+    useEffect(() => {
+        if (dependentId) {
+            const loadOrders = async () => {
+                try {
+                    const data = await fetchOrdersForDependent(dependentId);
+                    // Assume that data is an array of orders
+                    setOrdersData(data);
+                } catch (error) {
+                    Alert.alert('Erro', 'Falha ao carregar os pedidos.');
+                }
+            };
+
+            loadOrders();
+        }
+    }, [dependentId]);
+
+    // Function to convert date and time into a Date object
     const parseDate = (date, time) => {
         const [day, month, year] = date.split('/');
         const [hours, minutes] = time.split(':');
         return new Date(year, month - 1, day, hours, minutes);
     };
 
-    // Função para ordenar por data e horário
-    const sortedData = lanchesData.flatMap(section =>
-        section.data.map(item => ({
+    // Sort and format the data
+    const sortedData = ordersData
+        .map(item => ({
             ...item,
             fullDate: parseDate(item.data, item.horario),
         }))
-    ).sort((a, b) => a.fullDate - b.fullDate);
+        .sort((a, b) => a.fullDate - b.fullDate);
 
-    // Reestruturando para formatar a data de volta para o formato esperado
     const formattedData = sortedData.reduce((acc, item) => {
         const sectionTitle = item.data;
         if (!acc[sectionTitle]) {
@@ -74,7 +52,6 @@ const LanchesProgramados = () => {
         return acc;
     }, {});
 
-    // Convertendo o objeto de volta para um array
     const sections = Object.values(formattedData);
 
     return (

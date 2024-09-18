@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, Text, FlatList, Dimensions } from 'react-native';
-import styles from '../stylesScreen/stylesExtratochild';
+import { View, Text, FlatList } from 'react-native';
+import styles from '../stylesScreen/stylesExtratochild'; // Import the styles
 
 const ExtratoChild = ({ route }) => {
-    const { transactions } = route.params;
+    const { transactions } = route.params; // Get transactions from navigation params
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -42,9 +42,8 @@ const ExtratoChild = ({ route }) => {
                 {item.type === 'debit' ? '-' : '+'}
             </Text>
             <Text style={styles.description}>{item.description}</Text>
-            <Text style={styles.amount}>{item.amount}</Text>
+            <Text style={styles.amount}>R$ {item.amount}</Text>
         </View>
-
     );
 
     const renderTransactionGroup = ({ item }) => (
@@ -68,6 +67,5 @@ const ExtratoChild = ({ route }) => {
         </View>
     );
 };
-
 
 export default ExtratoChild;

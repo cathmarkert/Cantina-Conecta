@@ -1,20 +1,25 @@
-import * as React from "react";
-import { SectionList, View, Text } from "react-native";
-import styles from "../stylesScreen/stylesExtrato";
+import React, { useEffect, useState } from 'react';
+import { SectionList, View, Text } from 'react-native';
+import styles from '../stylesScreen/stylesExtrato'; // Import the styles
+import { getRepository } from 'typeorm'; // Import TypeORM's getRepository
+import { Transaction } from '../entities/Transaction'; // Import Transaction entity
 
 const Extrato = () => {
-    const data = [
-        { id: '1', type: 'Lanche', value: 'R$ 4,50 ', sign: '-', date: '11/02/2024' },
-        { id: '2', type: 'Lanche', value: 'R$ 4,50 ', sign: '-', date: '11/02/2024' },
-        { id: '3', type: 'Saldo', value: 'R$ 50,00 ', sign: '+', date: '11/02/2024' },
-        { id: '4', type: 'Lanche', value: 'R$ 4,50 ', sign: '-', date: '12/02/2024' },
-        { id: '5', type: 'Saldo', value: 'R$ 50,00 ', sign: '+', date: '12/02/2024' },
-        { id: '6', type: 'Lanche', value: 'R$ 4,50 ', sign: '-', date: '13/02/2024' },
-        { id: '7', type: 'Lanche', value: 'R$ 4,50 ', sign: '-', date: '13/02/2024' },
-        { id: '8', type: 'Lanche', value: 'R$ 4,50 ', sign: '-', date: '01/02/2024' },
-        { id: '9', type: 'Lanche', value: 'R$ 4,50 ', sign: '-', date: '05/02/2024' },
-        { id: '10', type: 'Lanche', value: 'R$ 4,50 ', sign: '-', date: '24/02/2024' },
-    ];
+    const [transactions, setTransactions] = useState([]);
+
+    useEffect(() => {
+        const fetchTransactions = async () => {
+            try {
+                const transactionRepository = getRepository(Transaction);
+                const allTransactions = await transactionRepository.find({ relations: ['dependent'] });
+                setTransactions(allTransactions);
+            } catch (error) {
+                console.error('Error fetching transactions:', error);
+            }
+        };
+
+        fetchTransactions();
+    }, []);
 
     const groupByDate = (data) => {
         const sections = data.reduce((acc, item) => {
@@ -32,7 +37,7 @@ const Extrato = () => {
         return sections;
     };
 
-    const sections = groupByDate(data);
+    const sections = groupByDate(transactions);
 
     const renderSectionHeader = ({ section: { date } }) => (
         <View style={styles.sectionHeader}>
@@ -45,7 +50,7 @@ const Extrato = () => {
 
         return (
             <View style={[styles.item, { backgroundColor }]}>
-                <Text style={item.sign === '+' ? styles.positive : styles.negative}>{item.sign}</Text>
+                <Text style={item.type === '+' ? styles.positive : styles.negative}>{item.sign}</Text>
                 <Text style={styles.type}>{item.type}</Text>
                 <Text style={styles.value}>{item.value}</Text>
             </View>
@@ -54,20 +59,16 @@ const Extrato = () => {
 
     return (
         <View style={styles.screen}>
-
             <View style={styles.contentContainer}>
                 <View style={styles.titleContainer}>
                     <Text style={styles.title}>Extrato</Text>
                 </View>
-
-                <View style={styles.contentContainer}>
-                    <SectionList
-                        sections={sections}
-                        keyExtractor={(item) => item.id}
-                        renderItem={renderItem}
-                        renderSectionHeader={renderSectionHeader}
-                    />
-                </View>
+                <SectionList
+                    sections={sections}
+                    keyExtractor={(item) => item.id}
+                    renderItem={renderItem}
+                    renderSectionHeader={renderSectionHeader}
+                />
             </View>
         </View>
     );
