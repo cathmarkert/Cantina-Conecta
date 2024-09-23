@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 // Telas
 import Login from './src/screens/login';
+import Registro from './src/screens/registro';
 
 // Rotas
 import HomeTabs from './src/routes/homeTabs';
@@ -16,6 +17,7 @@ export default function App() {
 		<NavigationContainer>
 			<Stack.Navigator>
 				<Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+				<Stack.Screen name="Register" component={Registro} options={{ headerShown: false }} />
 				<Stack.Screen name="HomeTabs" component={HomeTabs} options={{ headerShown: false }} />
 				<Stack.Screen name="HomeOwnerTabs" component={HomeOwnerTabs} options={{ headerShown: false }} />
 			</Stack.Navigator>

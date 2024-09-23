@@ -22,7 +22,6 @@ const AddEstoque = () => {
                         style={styles.input}
                         placeholder="Inserir Nome"
                         placeholderTextColor="#B0B0B0"
-                        editable={false}
                     />
 
                     <Text style={styles.textText}>Quantidade: </Text>
@@ -43,7 +42,7 @@ const AddEstoque = () => {
                         <View style={styles.checkbox}>
                             {isGlutenChecked && <View style={styles.checked} />}
                         </View>
-                        <Text style={styles.checkboxText}>Glúten</Text>
+                        <Text style={styles.checkboxText}>Glúten </Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.button}>

@@ -1,0 +1,38 @@
+# Diretórios do ambiente virtual
+venv/
+__pycache__/
+
+# Arquivos de banco de dados
+*.sqlite
+db.sqlite
+
+# Arquivos de configuração
+*.env
+
+# Arquivos de log
+*.log
+
+# Configurações do IDE
+*.idea/
+*.vscode/
+
+# Arquivos de cache
+*.pyc
+*.pyo
+*.pyd
+
+# Arquivos de backup
+*~ 
+*.bak
+
+# Arquivos de teste
+.coverage
+nosetests.xml
+test-results/
+
+# Documentação gerada
+docs/_build/
+
+# Outros arquivos que você pode não querer rastrear
+*.DS_Store
+*.py[cod]

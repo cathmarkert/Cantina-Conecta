@@ -13,18 +13,18 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginTop:  height * 0.02,
-        paddingHorizontal: width * 0.02, 
+        marginTop: height * 0.02,
+        paddingHorizontal: width * 0.02,
         marginBottom: height * 0.02,
     },
     backButton: {
-        padding: width * 0.01, 
+        padding: width * 0.01,
     },
     backText: {
-        fontSize: width * 0.045, 
+        fontSize: width * 0.045,
     },
     headerTitle: {
-        fontSize: width * 0.045, 
+        fontSize: width * 0.045,
         alignItems: 'center',
         fontWeight: 'bold',
     },
@@ -82,12 +82,28 @@ const styles = StyleSheet.create({
         padding: height * 0.02,
         borderRadius: 10,
         alignItems: 'center',
-        marginTop: height * 0.03,
-        marginBottom: height * 0.04,
+        marginTop: height * 0.01,
+        marginBottom: height * 0.01,
+    },
+    logoutButton: {
+        backgroundColor: '#ff0000',
+        padding: height * 0.02,
+        borderRadius: 10,
+        alignItems: 'center',
+        marginTop: height * 0.01,
+        marginBottom: height * 0.01,
     },
     addButtonText: {
         color: '#FFF',
+        textAlign: 'center',
         fontSize: width * 0.04, // Adjusted based on screen width
+        width: width * 0.45,
+    },
+    logoutButtonText: {
+        color: '#FFF',
+        textAlign: 'center',
+        fontSize: width * 0.04, // Adjusted based on screen width
+        width: width * 0.5,
     },
     amountContainer: {
         flexDirection: 'row',
@@ -111,7 +127,7 @@ const styles = StyleSheet.create({
         fontSize: width * 0.045, // Adjusted based on screen width
         fontWeight: 'bold',
     },
-    
+
 });
 
 export default styles;

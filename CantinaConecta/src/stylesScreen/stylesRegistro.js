@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     checkboxLabel: {
         fontSize: 16,
         color: '#333',
-        width: width * 0.4,
+        width: width * 0.5,
     },
     registerText: {
         fontSize: 16,
