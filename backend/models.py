@@ -11,8 +11,8 @@ class User(db.Model):
     name = db.Column(db.String(100), nullable=False)
     is_owner = db.Column(db.Boolean, default=False)
 
-    transactions = db.relationship('Transaction', backref='user_transactions', lazy=True)  
-    dependents = db.relationship('Dependent', backref='user_dependents', lazy=True) 
+    transactions = db.relationship('Transaction', back_populates='user', lazy=True)
+    dependents = db.relationship('Dependent', back_populates='user', lazy=True)
 
 class Dependent(db.Model):
     __tablename__ = 'dependents'
@@ -25,20 +25,18 @@ class Dependent(db.Model):
     valorgasto = db.Column(db.String(50), nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    
-    orders = db.relationship('Order', backref='dependent_orders', lazy=True, overlaps='dependent_orders')
-    transactions = db.relationship('Transaction', backref='dependent_transactions', lazy=True, overlaps='dependent_transactions')
+    user = db.relationship('User', back_populates='dependents')
+
+    orders = db.relationship('Order', back_populates='dependent', lazy=True)
+    transactions = db.relationship('Transaction', back_populates='dependent', lazy=True)
 
 class Order(db.Model):
     __tablename__ = 'orders'
     
     id = db.Column(db.Integer, primary_key=True)
     dependent_id = db.Column(db.Integer, db.ForeignKey('dependents.id'), nullable=False)
-    comidas = db.Column(db.Text, nullable=False)
-    bebidas = db.Column(db.Text, nullable=False)
-    time = db.Column(db.String(50), nullable=False)
 
-    dependent = db.relationship('Dependent', backref='dependent_orders', lazy=True)
+    dependent = db.relationship('Dependent', back_populates='orders')
 
 class Transaction(db.Model):
     __tablename__ = 'transactions'
@@ -50,7 +48,7 @@ class Transaction(db.Model):
     date = db.Column(db.String(50), nullable=False)
 
     dependent_id = db.Column(db.Integer, db.ForeignKey('dependents.id'), nullable=True)
-    dependent = db.relationship('Dependent', backref='dependent_transactions', lazy=True)
-
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
-    user = db.relationship('User', backref='user_transactions', lazy=True)
+
+    dependent = db.relationship('Dependent', back_populates='transactions')
+    user = db.relationship('User', back_populates='transactions')

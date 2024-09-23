@@ -11,7 +11,6 @@ def teste():
 # Rota para registro
 @auth_bp.route('/register', methods=['POST'])
 def register():
-    print("cheguei aqui")
     data = request.get_json()
     email = data.get('email')
     password = data.get('password')
@@ -45,15 +44,30 @@ def login():
     if not user or not check_password_hash(user.password, password):
         return jsonify({'message': 'Email ou senha inválidos.'}), 401
 
+    # Armazena o ID do usuário na sessão
+    session['user_id'] = user.id
+
     return jsonify({
         'message': 'Login realizado com sucesso!',
         'user_id': user.id,
-        'is_owner': user.is_owner 
+        'is_owner': user.is_owner
+    }), 200
+
+@auth_bp.route('/user_data', methods=['GET'])
+def get_user_data():
+    if 'user_id' not in session:
+        return jsonify({'message': 'Usuário não está logado.'}), 401
+    
+    user = User.query.get(session['user_id'])
+    return jsonify({
+        'user_id': user.id,
+        'email': user.email,
+        'name': user.name
     }), 200
 
 @auth_bp.route('/logout', methods=['POST'])
 def logout():
-    # Limpa a sessão ou trata o logout
-    # session.pop('user_id', None)
+    session.pop('user_id', None)
     return jsonify({'message': 'Logout realizado com sucesso!'}), 200
+
 
