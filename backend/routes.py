@@ -83,7 +83,6 @@ def update_dependente(dependente_id):
 def add_credit():
     data = request.get_json()
     value = data.get('credito')
-    print(value)
 
     user_id = session.get('user_id')
     user = Usuario.query.get(user_id)

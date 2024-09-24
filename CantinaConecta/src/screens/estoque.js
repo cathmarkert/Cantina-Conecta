@@ -71,7 +71,7 @@ const Estoque = () => {
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
-                <Text style={styles.title}>Lista de Pedidos</Text>
+                <Text style={styles.title}>Estoque</Text>
             </View>
 
             {/* FlatList para renderizar os itens do estoque */}

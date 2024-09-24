@@ -57,7 +57,7 @@ const AddEstoque = () => {
                 setIsLactoseChecked(false);
                 setIsGlutenChecked(false);
                 // Navega para a tela anterior ou outra tela
-                navigation.goBack();
+                navigation.navigate('Estoque');
             } else {
                 Alert.alert('Erro', data.message || 'Erro ao adicionar produto no estoque.');
             }

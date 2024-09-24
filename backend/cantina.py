@@ -11,7 +11,7 @@ def teste():
 
 # Rota para pegar informações do perfil
 @cantina_bp.route('/add-estoque', methods=['POST'])
-def add_credit():
+def add_estoque():
     data = request.get_json()
     produto = data.get('nome')
     quantidade = data.get('quantidade')
@@ -77,3 +77,35 @@ def add_aviso():
     except Exception as e:
         db.session.rollback()
         return jsonify({"message": "Erro ao adicionar aviso: " + str(e)}), 500
+    
+@cantina_bp.route('/remove-stock', methods=['POST'])
+def remove_stock():
+    data = request.get_json()
+    products_to_remove = data.get('products', [])
+
+    if not products_to_remove:
+        return jsonify(message='Nenhum produto para remover.'), 400
+
+    for item in products_to_remove:
+        product_id = item.get('id')
+        quantity_str = item.get('quantity')  # Obtém o quantity como string
+        try:
+            quantity = int(quantity_str)  # Converte para inteiro
+        except ValueError:
+            return jsonify(message=f'Quantidade inválida para o produto {product_id}.'), 400
+
+        if quantity < 0:
+            return jsonify(message=f'Quantidade inválida para o produto {product_id}.'), 400
+
+        product = Estoque.query.get(product_id)
+        if product:
+            if product.quantidade >= quantity:
+                product.quantidade -= quantity
+            else:
+                return jsonify(message=f'Quantidade insuficiente para o produto {product_id}.'), 400
+        else:
+            return jsonify(message=f'Produto {product_id} não encontrado.'), 400
+
+    db.session.commit()
+    return jsonify(message='Produtos retirados do estoque com sucesso.'), 200
+
