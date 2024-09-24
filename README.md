@@ -2,8 +2,9 @@
 Repository for the project of the Mobile Computing (Computação Móvel, em português) subject. 
 
 # Developers
-- [Catherine Bezerra Markert] (github.com/cathmarkert)
-- [Yago Costa Oliveira] (github.com/YagoOliveira852)
+- https://github.com/cathmarkert
+- [Catherine Bezerra Markert](https://github.com/cathmarkert)
+- [Yago Costa Oliveira](https://github.com/YagoOliveira852)
 
 # Objectives
 Our objective is developing a mobile aplication that digitalized the notebook used in many brazilian cantines to register kids' snacks at school. This will allow parents to have an easier access to what their children eat and allow them to program snacks, visualize expenses and check the cantine's notices. 
