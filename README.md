@@ -2,7 +2,6 @@
 Repository for the project of the Mobile Computing (Computação Móvel, em português) subject. 
 
 # Developers
-- https://github.com/cathmarkert
 - [Catherine Bezerra Markert](https://github.com/cathmarkert)
 - [Yago Costa Oliveira](https://github.com/YagoOliveira852)
 
