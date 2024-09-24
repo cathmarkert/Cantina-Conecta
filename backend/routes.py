@@ -56,6 +56,43 @@ def add_dependente():
     except Exception as e:
         db.session.rollback()
         return jsonify({"message": "Erro ao adicionar dependente: " + str(e)}), 500
+    
+@routes_bp.route('/remove-dependentes/<int:id>', methods=['DELETE'])
+def remover_dependente(id):
+    try:
+        dependente = Dependente.query.get(id)
+
+        if not dependente:
+            return jsonify({"error": "Dependente não encontrado"}), 404
+
+        # Remover o dependente do banco de dados
+        db.session.delete(dependente)
+        db.session.commit()
+
+        return jsonify({"message": "Dependente removido com sucesso"}), 200
+
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Erro ao remover dependente", "details": str(e)}), 500
+    
+@routes_bp.route('/dependentes/limite/<int:dependente_id>', methods=['PATCH'])
+def update_limite(dependente_id):
+    data = request.get_json()
+    novo_limite = data.get('limite')
+    
+    dependente = Dependente.query.get(dependente_id)
+    
+    if not dependente:
+        return jsonify({'error': 'Dependente não encontrado'}), 404
+    
+    try:
+        # Atualiza o limite do dependente
+        dependente.limite = novo_limite
+        db.session.commit()
+        return jsonify({'message': 'Limite atualizado com sucesso'}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
 
 
 @routes_bp.route('/dependentes/lanche/avulso/<int:dependente_id>', methods=['PATCH'])

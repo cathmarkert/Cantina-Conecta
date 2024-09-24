@@ -1,78 +1,39 @@
 import React from 'react';
-import { View, Text, FlatList, Dimensions } from 'react-native';
+import { View, Text } from 'react-native';
 import styles from '../stylesScreen/stylesExtratochild';
 
 const ExtratoChild = ({ route }) => {
-    const { name, transactions } = route.params;
-
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('pt-BR', {
-            day: '2-digit',
-            month: '2-digit',
-        });
-    };
-
-    const groupTransactionsByDate = (transactions) => {
-        return transactions.reduce((acc, transaction) => {
-            const date = formatDate(transaction.date);
-            if (!acc[date]) {
-                acc[date] = [];
-            }
-            acc[date].push(transaction);
-            return acc;
-        }, {});
-    };
-
-    const groupedTransactions = groupTransactionsByDate(transactions);
-
-    const groupedTransactionsArray = Object.keys(groupedTransactions).map((date) => ({
-        date,
-        data: groupedTransactions[date],
-    }));
-
-    const renderTransactionItem = ({ item }) => (
-        <View style={styles.transactionItem}>
-            <Text
-                style={[
-                    styles.symbol,
-                    { color: item.type === 'debit' ? 'red' : 'green' },
-                ]}
-            >
-                {item.type === 'debit' ? '-' : '+'}
-            </Text>
-            <Text style={styles.description}>{item.description}</Text>
-            <Text style={styles.amount}>{item.amount}</Text>
-        </View>
-
-    );
-
-    const renderTransactionGroup = ({ item }) => (
-        <View style={styles.groupContainer}>
-            <Text style={styles.sectionTitle}>{item.date}</Text>
-            <FlatList
-                data={item.data}
-                renderItem={renderTransactionItem}
-                keyExtractor={(item) => item.id.toString()}
-            />
-        </View>
-    );
+    const { name, matricula, lanche_avulso, limite, valor_gasto } = route.params;
 
     return (
         <View style={styles.container}>
             <View style={styles.contentContainer}>
                 <View style={styles.titleContainer}>
-                    <Text style={styles.title}>Extrato {name}</Text>
+                    <Text style={styles.title}>Informações do Dependente</Text>
+                </View>
+                <View style={styles.infoContainer}>
+                    <Text style={styles.label}>Nome:</Text>
+                    <Text style={styles.value}>{name}</Text>
+                </View>
+                <View style={styles.infoContainer}>
+                    <Text style={styles.label}>Matrícula:</Text>
+                    <Text style={styles.value}>{matricula}</Text>
+                </View>
+                <View style={styles.infoContainer}>
+                    <Text style={styles.label}>Lanche Avulso:</Text>
+                    <Text style={styles.value}>{lanche_avulso ? 'Sim' : 'Não'}</Text>
+                </View>
+                <View style={styles.infoContainer}>
+                    <Text style={styles.label}>Limite:</Text>
+                    <Text style={styles.value}>R$ {limite}</Text>
+                </View>
+                <View style={styles.infoContainer}>
+                    <Text style={styles.label}>Valor Gasto:</Text>
+                    <Text style={styles.value}>R$ {valor_gasto}</Text>
                 </View>
             </View>
-            <FlatList
-                data={groupedTransactionsArray}
-                renderItem={renderTransactionGroup}
-                keyExtractor={(item) => item.date}
-            />
         </View>
     );
 };
-
 
 export default ExtratoChild;
