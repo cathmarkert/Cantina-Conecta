@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@expo/vector-icons": "^14.0.2",
+    "native-base": "^2.15.2"
+  }
+}
