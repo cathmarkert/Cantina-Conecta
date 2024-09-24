@@ -4,12 +4,13 @@ const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
 	scrollViewContent: {
-		flexGrow: 1,  // Permite que a ScrollView preencha toda a tela mesmo quando o conteúdo não for suficiente para rolar
+		// flexGrow: 1,  // Permite que a ScrollView preencha toda a tela mesmo quando o conteúdo não for suficiente para rolar
 		justifyContent: 'center',  // Centraliza o conteúdo quando não há necessidade de rolagem
 	},
 	container: {
 		flex: 1,
 		backgroundColor: '#fff',
+		backgroundColor: '#F2EFEF',
 	},
 	header: {
 		flexDirection: 'row',
@@ -34,6 +35,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		padding: width * 0.04,  // Ajuste responsivo para o padding
+		paddingVertical: width * 0.01,  // Ajuste responsivo para o padding
 	},
 	amountText: {
 		fontSize: width * 0.09,  // Responsivo de acordo com a largura da tela
@@ -52,9 +54,12 @@ const styles = StyleSheet.create({
 		backgroundColor: '#050C9C',
 		padding: width * 0.025,  // Ajuste responsivo para o padding
 		borderRadius: 5,
-		marginBottom: height * 0.04,  // Ajuste responsivo para o margin
+		marginVertical: height * 0.01,  // Ajuste responsivo para o margin
+		width: width * 0.9,
+		textAlign: 'center'
 	},
 	paymentButton: {
+		backgroundColor: '#fff',
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'center',
@@ -70,7 +75,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 	icon: {
-		// Responsivo ao tamanho da tela (exemplo comentado)
+		width: 70, height: 70
 	},
 	paymentText: {
 		fontSize: width * 0.045,  // Responsivo de acordo com a largura da tela
@@ -90,6 +95,7 @@ const styles = StyleSheet.create({
 		fontSize: width * 0.04,  // Responsivo de acordo com a largura da tela
 	},
 	amountContainer: {
+		backgroundColor: '#3572EF',
 		flexDirection: 'row',
 		alignItems: 'center',
 		justifyContent: 'space-between',
@@ -102,6 +108,7 @@ const styles = StyleSheet.create({
 	},
 	creditBox: {
 		flex: 1,
+		backgroundColor: '#fff',
 		alignItems: 'flex-start',  // Ajuste para 'flex-start' em vez de 'left'
 		margin: width * 0.025,  // Ajuste responsivo para o margin
 		padding: width * 0.03,  // Ajuste responsivo para o padding
@@ -116,6 +123,16 @@ const styles = StyleSheet.create({
 		width: width * 0.06,  // Ajuste responsivo para o tamanho do ícone
 		height: width * 0.06,  // Ajuste responsivo para o tamanho do ícone
 	},
+	input: {
+		height: 40,
+		borderColor: '#ccc',
+		backgroundColor: '#fff',
+		borderWidth: 1,
+		borderRadius: 5,
+		paddingHorizontal: 10,
+		width: width * 0.73,
+		marginVertical: 10,
+	}
 });
 
 export default styles;

@@ -4,8 +4,10 @@ from flask import Flask, session
 from flask_cors import CORS
 from flask_migrate import Migrate
 from flask_session import Session
-from models import db, Dependent
+from models import db
 from auth import auth_bp
+from routes import routes_bp
+from cantina import cantina_bp
 
 load_dotenv()
 
@@ -30,6 +32,8 @@ except Exception as e:
     print(f'Erro ao criar o banco de dados: {e}')
 
 app.register_blueprint(auth_bp)
+app.register_blueprint(routes_bp)
+app.register_blueprint(cantina_bp)
 
 if __name__ == '__main__':
     app.run(debug=True,host="0.0.0.0", port=8082) 

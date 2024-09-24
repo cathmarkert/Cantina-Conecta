@@ -15,9 +15,11 @@ const Register = ({ navigation }) => {
             alert('As senhas não coincidem!');
             return;
         }
+
         try {
             const response = await fetch(`${API_URL}/register`, {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -25,7 +27,7 @@ const Register = ({ navigation }) => {
                     email,
                     password: senha,
                     name: nome,
-                    isOwner
+                    is_owner: isOwner
                 }),
             });
 
@@ -80,7 +82,7 @@ const Register = ({ navigation }) => {
 
             <TouchableOpacity style={styles.checkboxContainer} onPress={() => setIsOwner(!isOwner)}>
                 <View style={[styles.checkbox, { backgroundColor: isOwner ? '#050C9C' : '#fff', borderColor: isOwner ? '#050C9C' : '#ccc' }]}>
-                    {isOwner && <Text style={styles.checkboxChecked}>✔</Text>}
+                    {isOwner && <Text style={styles.checkboxChecked}>X</Text>}
                 </View>
                 <Text style={styles.checkboxLabel}>Registrar como Dono </Text>
             </TouchableOpacity>

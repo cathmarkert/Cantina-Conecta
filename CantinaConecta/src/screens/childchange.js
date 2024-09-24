@@ -27,7 +27,7 @@ const Limitchange = () => {
                         placeholderTextColor="#B0B0B0"
                     />
                     <TouchableOpacity style={styles.button}>
-                        <Text style={styles.buttonText}>Adicionar</Text>
+                        <Text style={styles.buttonText}>Confirmar</Text>
                     </TouchableOpacity>
                 </View>
             </View>

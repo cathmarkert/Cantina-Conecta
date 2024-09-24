@@ -3,7 +3,7 @@ import { View, Text, FlatList, Dimensions } from 'react-native';
 import styles from '../stylesScreen/stylesExtratochild';
 
 const ExtratoChild = ({ route }) => {
-    const { transactions } = route.params;
+    const { name, transactions } = route.params;
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -60,6 +60,11 @@ const ExtratoChild = ({ route }) => {
 
     return (
         <View style={styles.container}>
+            <View style={styles.contentContainer}>
+                <View style={styles.titleContainer}>
+                    <Text style={styles.title}>Extrato {name}</Text>
+                </View>
+            </View>
             <FlatList
                 data={groupedTransactionsArray}
                 renderItem={renderTransactionGroup}

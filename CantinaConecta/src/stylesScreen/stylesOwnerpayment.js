@@ -49,7 +49,7 @@ export default StyleSheet.create({
     },
     productButton: {
         backgroundColor: '#3572EF',
-        padding: 10,
+        padding: width * 0.03,
         borderRadius: 8,
         marginBottom: 10,
         width: width * 0.4,
@@ -58,21 +58,21 @@ export default StyleSheet.create({
     buttonText: {
         color: '#fff',
         fontSize: 16,
+        width: width * 0.2
     },
-    quantityButton: {
-        backgroundColor: '#f1f1f1',
-        padding: 10,
+    quantityInput: {
+        backgroundColor: '#F9F9F9',
+        padding: width * 0.02,
         borderRadius: 8,
         marginBottom: 10,
-        width: width * 0.4,
+        width: width * 0.2,
         textAlign: 'center',
+        borderColor: '#ccc',
+        borderWidth: 1,
     },
-    quantityText: {
-        fontSize: 16,
-        textAlign: 'center',
-    },
+
     totalInput: {
-        backgroundColor: '#f1f1f1',
+        backgroundColor: '#F9F9F9',
         padding: height * 0.013,
         borderRadius: 8,
         marginBottom: 20,
@@ -90,42 +90,9 @@ export default StyleSheet.create({
         borderRadius: 8,
         alignItems: 'center',
     },
-    paymentButtonText: {
-        color: '#fff',
-        fontSize: 18,
-        fontWeight: 'bold',
-    },
     buttonContainer: {
-        alignItems: 'center',  // Centers horizontally
-        marginBottom: 20,
-    },
-    titleContainer: {
-        paddingHorizontal: 20,
-        alignSelf: 'center',
-        flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
-        width: '80%',
-        padding: 20,
-        backgroundColor: '#F9F9F9',
-        borderRadius: 8,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 3,
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold'
-    },
-    quantityInput: {
-        backgroundColor: '#f1f1f1',
-        padding: width * 0.027,
-        borderRadius: 8,
-        marginBottom: 10,
-        width: width * 0.2,
-        textAlign: 'center',
+        marginBottom: 20,
     },
     iconContainer: {
         flexDirection: 'column',
@@ -136,6 +103,7 @@ export default StyleSheet.create({
         fontWeight: 'bold',
     },
     icon: {
-        // Responsivo ao tamanho da tela (exemplo comentado)
+        width: 70,
+        height: 70
     },
 });
