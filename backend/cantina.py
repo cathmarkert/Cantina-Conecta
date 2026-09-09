@@ -1,111 +1,101 @@
-from flask import Blueprint, request, session, jsonify
-from flask_login import login_required, current_user
-from werkzeug.security import generate_password_hash, check_password_hash
-from models import db, Usuario, Dependente, Estoque, Aviso
+from decimal import Decimal, InvalidOperation
+
+from flask import Blueprint, jsonify, request
+
+from models import Aviso, Estoque, db
+from security import login_required, owner_required
 
 cantina_bp = Blueprint('cantina', __name__)
 
-@cantina_bp.route('/teste', methods=['GET'])
-def teste():
-    return('teste')
 
-# Rota para pegar informações do perfil
+def serializar_produto(item):
+    return {
+        'id': item.id,
+        'nome': item.produto,
+        'quantidade': item.quantidade,
+        'contem_lactose': item.contem_lactose,
+        'contem_gluten': item.contem_gluten,
+        'preco': float(item.preco),
+    }
+
+
 @cantina_bp.route('/add-estoque', methods=['POST'])
-def add_estoque():
-    data = request.get_json()
+@owner_required
+def add_estoque(usuario):
+    data = request.get_json() or {}
     produto = data.get('nome')
     quantidade = data.get('quantidade')
     preco = data.get('preco')
-    contem_lactose = data.get('contem_lactose')
-    contem_gluten = data.get('contem_gluten')
 
-    user_id = session.get('user_id')
-    user = Usuario.query.get(user_id)
+    if not produto or quantidade is None:
+        return jsonify({'message': 'Nome e quantidade são obrigatórios.'}), 400
 
-    if not produto or not quantidade:
-        return jsonify({"message": "Nome e quantidade são obrigatórios."}), 400
+    try:
+        quantidade = int(quantidade)
+        preco = Decimal(str(preco if preco is not None else 0))
+    except (ValueError, TypeError, InvalidOperation):
+        return jsonify({'message': 'Quantidade ou preço inválidos.'}), 400
 
-    novo_produto = Estoque(produto=produto, quantidade=quantidade, contem_lactose=contem_lactose, contem_gluten=contem_gluten, preco=preco)
+    if quantidade < 0 or preco < 0:
+        return jsonify({'message': 'Quantidade e preço não podem ser negativos.'}), 400
+
+    novo_produto = Estoque(
+        produto=produto,
+        quantidade=quantidade,
+        contem_lactose=bool(data.get('contem_lactose')),
+        contem_gluten=bool(data.get('contem_gluten')),
+        preco=preco,
+    )
 
     try:
         db.session.add(novo_produto)
         db.session.commit()
-        return jsonify({"message": "Produto adicionado ao estoque com sucesso!"}), 201
+        return jsonify({
+            'message': 'Produto adicionado ao estoque com sucesso!',
+            'produto': serializar_produto(novo_produto),
+        }), 201
     except Exception as e:
         db.session.rollback()
-        return jsonify({"message": "Erro ao adicionar produto: " + str(e)}), 500
-    
+        return jsonify({'message': 'Erro ao adicionar produto: ' + str(e)}), 500
+
 
 @cantina_bp.route('/estoque', methods=['GET'])
-def get_estoque():
-    try:
-        # Query para buscar todos os itens de estoque
-        estoque = Estoque.query.all()
+@login_required
+def get_estoque(usuario):
+    estoque = Estoque.query.order_by(Estoque.produto).all()
+    return jsonify([serializar_produto(item) for item in estoque]), 200
 
-        # Transformando o resultado em um formato JSON
-        estoque_list = [{
-            'id': item.id,
-            'nome': item.produto,
-            'quantidade': item.quantidade,
-            'contem_lactose': item.contem_lactose,
-            'contem_gluten': item.contem_gluten,
-            'preco' : item.preco
-        } for item in estoque]
 
-        # Retornando a lista de estoque como JSON
-        return jsonify(estoque_list), 200
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-    
 @cantina_bp.route('/add-aviso', methods=['POST'])
-def add_aviso():
-    data = request.get_json()
-    aviso = data.get('mensagem')
+@owner_required
+def add_aviso(usuario):
+    data = request.get_json() or {}
+    mensagem = data.get('mensagem')
 
-    user_id = session.get('user_id')
-    user = Usuario.query.get(user_id)
+    if not mensagem:
+        return jsonify({'message': 'Mensagem de Aviso é obrigatória.'}), 400
 
-    if not aviso:
-        return jsonify({"message": "Mensagem de Aviso é obrigatória."}), 400
-
-    novo_aviso = Aviso(mensagem=aviso, dono_id=user_id)
+    novo_aviso = Aviso(mensagem=mensagem, dono_id=usuario.id)
 
     try:
         db.session.add(novo_aviso)
         db.session.commit()
-        return jsonify({"message": "Aviso adicionado com sucesso!"}), 201
+        return jsonify({'message': 'Aviso adicionado com sucesso!'}), 201
     except Exception as e:
         db.session.rollback()
-        return jsonify({"message": "Erro ao adicionar aviso: " + str(e)}), 500
-    
-@cantina_bp.route('/remove-stock', methods=['POST'])
-def remove_stock():
-    data = request.get_json()
-    products_to_remove = data.get('products', [])
+        return jsonify({'message': 'Erro ao adicionar aviso: ' + str(e)}), 500
 
-    if not products_to_remove:
-        return jsonify(message='Nenhum produto para remover.'), 400
 
-    for item in products_to_remove:
-        product_id = item.get('id')
-        quantity_str = item.get('quantity')  # Obtém o quantity como string
-        try:
-            quantity = int(quantity_str)  # Converte para inteiro
-        except ValueError:
-            return jsonify(message=f'Quantidade inválida para o produto {product_id}.'), 400
-
-        if quantity < 0:
-            return jsonify(message=f'Quantidade inválida para o produto {product_id}.'), 400
-
-        product = Estoque.query.get(product_id)
-        if product:
-            if product.quantidade >= quantity:
-                product.quantidade -= quantity
-            else:
-                return jsonify(message=f'Quantidade insuficiente para o produto {product_id}.'), 400
-        else:
-            return jsonify(message=f'Produto {product_id} não encontrado.'), 400
-
-    db.session.commit()
-    return jsonify(message='Produtos retirados do estoque com sucesso.'), 200
-
+@cantina_bp.route('/avisos', methods=['GET'])
+@login_required
+def get_avisos(usuario):
+    """Avisos da cantina, do mais recente para o mais antigo."""
+    avisos = Aviso.query.order_by(Aviso.data_criacao.desc()).limit(20).all()
+    return jsonify([
+        {
+            'id': aviso.id,
+            'mensagem': aviso.mensagem,
+            'data': aviso.data_criacao.strftime('%d/%m/%Y'),
+        }
+        for aviso in avisos
+    ]), 200

@@ -1,21 +1,23 @@
-from flask import Blueprint, request, session, jsonify
-from werkzeug.security import generate_password_hash, check_password_hash
-from models import db, Usuario
+from flask import Blueprint, jsonify, request, session
+from werkzeug.security import check_password_hash, generate_password_hash
+
+from models import Usuario, db
+from security import login_required
 
 auth_bp = Blueprint('auth', __name__)
 
-@auth_bp.route('/teste', methods=['GET'])
-def teste():
-    return('teste')
 
 # Rota para registro
 @auth_bp.route('/register', methods=['POST'])
 def register():
-    data = request.get_json()
+    data = request.get_json() or {}
     email = data.get('email')
     password = data.get('password')
     name = data.get('name')
     is_owner = data.get('is_owner', False)
+
+    if not email or not password or not name:
+        return jsonify({'message': 'Nome, email e senha são obrigatórios.'}), 400
 
     # Verifica se o email já existe
     if Usuario.query.filter_by(email=email).first():
@@ -26,17 +28,18 @@ def register():
         email=email,
         password=generate_password_hash(password),
         name=name,
-        is_owner=is_owner
+        is_owner=bool(is_owner)
     )
     db.session.add(new_user)
     db.session.commit()
 
     return jsonify({'message': 'Usuário registrado com sucesso!'}), 201
 
+
 # Rota para login
 @auth_bp.route('/login', methods=['POST'])
 def login():
-    data = request.get_json()
+    data = request.get_json() or {}
     email = data.get('email')
     password = data.get('password')
 
@@ -53,21 +56,18 @@ def login():
         'is_owner': user.is_owner
     }), 200
 
+
 @auth_bp.route('/user_data', methods=['GET'])
-def get_user_data():
-    if 'user_id' not in session:
-        return jsonify({'message': 'Usuário não está logado.'}), 401
-    
-    user = Usuario.query.get(session['user_id'])
+@login_required
+def get_user_data(usuario):
     return jsonify({
-        'id': user.id,
-        'email': user.email,
-        'name': user.name
+        'id': usuario.id,
+        'email': usuario.email,
+        'name': usuario.name
     }), 200
+
 
 @auth_bp.route('/logout', methods=['POST'])
 def logout():
     session.pop('user_id', None)
     return jsonify({'message': 'Logout realizado com sucesso!'}), 200
-
-
