@@ -15,11 +15,21 @@ Trabalho final da disciplina de **Computação Móvel**, desenvolvido em dupla e
 - [Yago Costa Oliveira](https://github.com/YagoOliveira852) — navegação, backend
   e integração
 
-<!--
-Screenshots: adicione aqui 3 ou 4 capturas dos dois fluxos (responsável e dono).
-Rode o app no Expo Go, tire os prints, salve em docs/screenshots/ e referencie
-com: ![Tela inicial](docs/screenshots/home.png)
--->
+## Telas
+
+**Responsável**
+
+| Montagem do pedido | Adicionar créditos |
+|---|---|
+| <img src="docs/screenshots/pedido.png" width="320" alt="Tela de seleção de lanche: dependente, horário de entrega, produtos com preço e estoque, itens do pedido e total"> | <img src="docs/screenshots/pagamento.png" width="320" alt="Tela de pagamento com saldo, campo de valor e escolha entre PIX e cartão"> |
+| Escolhe o dependente e o horário de entrega, monta o pedido a partir do estoque real e vê o total antes de confirmar. | O saldo no topo é o crédito real da conta e acompanha o usuário em todas as telas. |
+
+**Dono da cantina**
+
+| Painel | Estoque |
+|---|---|
+| <img src="docs/screenshots/home-dono.png" width="320" alt="Painel do dono com atalhos para extrato e pedidos, estatísticas de 30 dias e botão de adicionar compra"> | <img src="docs/screenshots/estoque.png" width="320" alt="Lista de estoque com quantidade, preço e marcação de lactose e glúten por produto"> |
+| Atalhos para o extrato de compras e a lista de pedidos, com estatísticas dos últimos 30 dias. | Quantidade e preço por produto, com marcação de lactose e glúten. |
 
 ## Funcionalidades
 
@@ -43,7 +53,7 @@ com: ![Tela inicial](docs/screenshots/home.png)
 
 | Camada | Tecnologias |
 |---|---|
-| App | React Native (Expo 51), React Navigation, React Native Paper |
+| App | React Native 0.86 (Expo SDK 57), React Navigation, React Native Paper |
 | API | Flask, SQLAlchemy, Flask-Session, Flask-Migrate |
 | Banco | SQLite |
 
@@ -77,7 +87,9 @@ do crédito, baixa do estoque, atualização do gasto) numa única transação.
 
 ## Como rodar
 
-Requer Python 3.10+, Node 18+ e o app Expo Go no celular.
+Requer Python 3.10+, Node 18+ e o app Expo Go no celular. O projeto está no
+Expo SDK 57, que é o que o Expo Go das lojas executa — o app abre sem build
+nativo.
 
 **Backend**
 
@@ -151,6 +163,16 @@ recurso.
 um erro clássico: somar `float` com `Decimal` levanta `TypeError` em Python, e a
 adição de crédito quebrava com qualquer valor quebrado — "R$ 10" passava, "R$
 10,50" não.
+
+**A interface é a parte mais fraca, e o motivo é estrutural.** Foi meu primeiro
+projeto em React Native, e isso aparece menos no visual em si do que na forma
+como ele foi construído: os estilos foram escritos tela a tela, sem tokens
+compartilhados de cor, espaçamento ou tipografia. São 2.400 linhas de
+`StyleSheet` para 1.800 linhas de tela — mais estilo do que interface, quase
+todo repetido. Hoje eu começaria pelo contrário: um tema central e meia dúzia
+de componentes de base (botão, campo, card) antes de desenhar a primeira tela.
+Foi a mesma lição que aprendi no backend com a camada de API — repetição é
+sintoma de abstração faltando.
 
 **Merge é parte do trabalho.** Dividimos as tarefas em branches por pessoa e por
 tema, o que funcionou bem durante o desenvolvimento. O que faltou foi fechar o
