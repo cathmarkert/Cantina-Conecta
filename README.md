@@ -164,16 +164,6 @@ um erro clássico: somar `float` com `Decimal` levanta `TypeError` em Python, e 
 adição de crédito quebrava com qualquer valor quebrado — "R$ 10" passava, "R$
 10,50" não.
 
-**A interface é a parte mais fraca, e o motivo é estrutural.** Foi meu primeiro
-projeto em React Native, e isso aparece menos no visual em si do que na forma
-como ele foi construído: os estilos foram escritos tela a tela, sem tokens
-compartilhados de cor, espaçamento ou tipografia. São 2.400 linhas de
-`StyleSheet` para 1.800 linhas de tela — mais estilo do que interface, quase
-todo repetido. Hoje eu começaria pelo contrário: um tema central e meia dúzia
-de componentes de base (botão, campo, card) antes de desenhar a primeira tela.
-Foi a mesma lição que aprendi no backend com a camada de API — repetição é
-sintoma de abstração faltando.
-
 **Merge é parte do trabalho.** Dividimos as tarefas em branches por pessoa e por
 tema, o que funcionou bem durante o desenvolvimento. O que faltou foi fechar o
 ciclo: as duas últimas semanas de trabalho ficaram paradas em três branches nunca
