@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { SectionList, View, Text, TouchableOpacity } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from '@expo/vector-icons/FontAwesome';
 import styles from '../stylesScreen/stylesExtratoCompras';
 import { api } from '../services/api';
 

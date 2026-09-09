@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/Ionicons';
-// import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from '@expo/vector-icons/Ionicons';
+// import Icon from '@expo/vector-icons/FontAwesome5';
 
 // Telas
 import Extrato from '../screens/extrato';
