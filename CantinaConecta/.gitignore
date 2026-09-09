@@ -34,3 +34,9 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+# Android / Gradle (build cache)
+android/.gradle/
+android/build/
+android/app/build/
+*.keystore
