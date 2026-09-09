@@ -1,49 +1,33 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import styles from '../stylesScreen/stylesLogin';
-import { API_URL } from '@env';
+import { api } from '../services/api';
 
 const Login = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
-    // const [isOwner, setIsOwner] = useState(false); // Estado para o checkbox
+    const [enviando, setEnviando] = useState(false);
 
     const handleLogin = async () => {
-        try {
-            const response = await fetch(`${API_URL}/login`, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email,
-                    password: senha,
-                }),
-            });
+        if (!email || !senha) {
+            Alert.alert('Erro', 'Preencha email e senha.');
+            return;
+        }
 
-            const data = await response.json();
-            if (response.ok) {
-                alert(data.message);
-                if (data.is_owner) {
-                    navigation.reset({
-                        index: 0,
-                        routes: [{ name: "HomeOwnerTabs" }]
-                    });
-                } else {
-                    navigation.reset({
-                        index: 0,
-                        routes: [{ name: "HomeTabs" }]
-                    });
-                }
-            } else {
-                alert(data.message);
-            }
+        setEnviando(true);
+        try {
+            const data = await api.post('/login', { email, password: senha });
+            // O destino depende do perfil: dono da cantina ou responsável.
+            navigation.reset({
+                index: 0,
+                routes: [{ name: data.is_owner ? 'HomeOwnerTabs' : 'HomeTabs' }],
+            });
         } catch (error) {
-            alert('Erro ao fazer login: ' + error.message);
+            Alert.alert('Erro', error.message);
+        } finally {
+            setEnviando(false);
         }
     };
-
 
     return (
         <View style={styles.container}>
@@ -54,29 +38,21 @@ const Login = ({ navigation }) => {
                 style={styles.input}
                 placeholder='Email'
                 value={email}
-                onChangeText={text => setEmail(text)}
+                onChangeText={setEmail}
                 keyboardType='email-address'
+                autoCapitalize='none'
             />
 
             <TextInput
                 style={styles.input}
                 placeholder='Senha'
                 value={senha}
-                onChangeText={text => setSenha(text)}
+                onChangeText={setSenha}
                 secureTextEntry={true}
             />
 
-            {/* <TouchableOpacity style={styles.checkboxContainer} onPress={() => setIsOwner(!isOwner)}>
-                <View style={[styles.checkbox, { backgroundColor: isOwner ? '#050C9C' : '#fff', borderColor: isOwner ? '#050C9C' : '#ccc' }]}>
-                    {isOwner && <Text style={styles.checkboxChecked}>X</Text>}
-                </View>
-
-                <Text style={styles.checkboxLabel}>Entrar como Dono</Text>
-
-            </TouchableOpacity> */}
-
-            <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                <Text style={styles.buttonText}>Entrar </Text>
+            <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={enviando}>
+                <Text style={styles.buttonText}>{enviando ? 'Entrando...' : 'Entrar'}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => navigation.navigate('Register')}>

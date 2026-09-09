@@ -1,110 +1,103 @@
-import React, { useState, useEffect, memo } from 'react';
-import { View, Text, TouchableOpacity, TextInput, FlatList, Image, Alert } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { View, Text, TouchableOpacity, TextInput, FlatList, Image, Alert, ScrollView } from 'react-native';
+import { Menu, Button } from 'react-native-paper';
+import { useFocusEffect } from '@react-navigation/native';
 import styles from '../stylesScreen/stylesOwnerpayment';
-import { API_URL } from '@env';
+import { api, formatarReal } from '../services/api';
 
+/**
+ * Venda no balcão da cantina.
+ *
+ * A compra é vinculada a um dependente e debitada do crédito do responsável,
+ * respeitando a permissão de lanche avulso e o limite de gasto.
+ */
 const ProductScreen = () => {
-    const [products, setProducts] = useState([]);
-    const [quantities, setQuantities] = useState([]);
-    const [total, setTotal] = useState(0);
-    const [editingIndex, setEditingIndex] = useState(null); // Estado para controle do item sendo editado
-    const [inputQuantity, setInputQuantity] = useState('0'); // Estado para quantidade do input
+    const [produtos, setProdutos] = useState([]);
+    const [dependentes, setDependentes] = useState([]);
 
-    useEffect(() => {
-        const fetchProducts = async () => {
-            try {
-                const response = await fetch(`${API_URL}/estoque`);
-                const data = await response.json();
+    const [dependenteSelecionado, setDependenteSelecionado] = useState(null);
+    const [menuAberto, setMenuAberto] = useState(false);
 
-                // Converte preços para número
-                const formattedData = data.map(product => ({
-                    ...product,
-                    preco: parseFloat(product.preco),
-                }));
+    const [carrinho, setCarrinho] = useState({});
+    const [editando, setEditando] = useState(null);
+    const [quantidade, setQuantidade] = useState('0');
+    const [enviando, setEnviando] = useState(false);
 
-                if (response.ok) {
-                    setProducts(formattedData);
-                    setQuantities(Array(formattedData.length).fill('0'));
-                } else {
-                    alert('Erro', 'Não foi possível carregar os produtos.');
-                }
-            } catch (error) {
-                alert('Erro', 'Ocorreu um erro na conexão.');
-                console.error(error);
-            }
-        };
+    const carregar = useCallback(() => {
+        api.get('/estoque')
+            .then(setProdutos)
+            .catch((error) => Alert.alert('Erro', error.message));
 
-        fetchProducts();
+        api.get('/dependentes')
+            .then(setDependentes)
+            .catch((error) => Alert.alert('Erro', error.message));
     }, []);
 
-    const handleQuantityChange = (text) => {
-        const parsedValue = parseInt(text, 10);
-        const quantity = isNaN(parsedValue) || parsedValue < 0 ? '0' : parsedValue.toString();
-        setInputQuantity(quantity);
-    };
+    useFocusEffect(carregar);
 
-    const handleItemPress = (index) => {
-        setEditingIndex(index); // Define o índice do item que está sendo editado
-        setInputQuantity(quantities[index]); // Define a quantidade atual
-    };
+    const total = produtos.reduce(
+        (soma, produto) => soma + (carrinho[produto.id] || 0) * Number(produto.preco),
+        0
+    );
 
-    const handleSaveQuantity = () => {
-        if (editingIndex !== null) {
-            const newQuantities = [...quantities];
-            newQuantities[editingIndex] = inputQuantity;
-            setQuantities(newQuantities);
-            setTotal(newQuantities.reduce((sum, qty, idx) => sum + (parseInt(qty) * products[idx].preco), 0));
-            setEditingIndex(null); // Reseta o índice de edição
-            setInputQuantity('0'); // Reseta o valor do input
+    const salvarQuantidade = () => {
+        const qtd = parseInt(quantidade, 10);
+
+        if (isNaN(qtd) || qtd < 0) {
+            Alert.alert('Erro', 'Informe uma quantidade válida.');
+            return;
         }
+
+        setCarrinho((atual) => ({ ...atual, [editando.id]: qtd }));
+        setEditando(null);
+        setQuantidade('0');
     };
 
-    const handlePayment = async () => {
+    const registrarVenda = async () => {
+        if (!dependenteSelecionado) {
+            Alert.alert('Erro', 'Selecione o dependente que está comprando.');
+            return;
+        }
+
+        const itens = Object.entries(carrinho)
+            .filter(([, qtd]) => qtd > 0)
+            .map(([estoqueId, qtd]) => ({ estoque_id: Number(estoqueId), quantidade: qtd }));
+
+        if (itens.length === 0) {
+            Alert.alert('Erro', 'Selecione ao menos um produto.');
+            return;
+        }
+
+        setEnviando(true);
         try {
-            // Adiciona crédito
-            const addCreditResponse = await fetch(`${API_URL}/add-credit`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ credito: total }),
+            await api.post('/venda-balcao', {
+                dependente_id: dependenteSelecionado.id,
+                itens,
             });
 
-            if (!addCreditResponse.ok) {
-                throw new Error('Erro ao adicionar crédito');
-            }
-
-            // Remove produtos do estoque
-            const productsToRemove = products
-                .map((product, index) => ({ id: product.id, quantity: quantities[index] }))
-                .filter(item => parseInt(item.quantity) > 0); // Filtra apenas os que têm quantidade maior que 0
-
-            const removeStockResponse = await fetch(`${API_URL}/remove-stock`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ products: productsToRemove }),
-            });
-
-            // Verifica se a resposta não está OK e tenta capturar a mensagem de erro
-            if (!removeStockResponse.ok) {
-                const errorData = await removeStockResponse.json(); // Captura os dados de erro
-                throw new Error(errorData.message || 'Erro ao retirar produtos do estoque');
-            }
-
-            alert('Sucesso', 'Pagamento realizado e produtos retirados do estoque com sucesso!');
+            Alert.alert('Sucesso', 'Venda registrada e estoque atualizado!');
+            setCarrinho({});
+            setDependenteSelecionado(null);
+            carregar();
         } catch (error) {
-            alert('Erro', error.message);
+            Alert.alert('Não foi possível concluir', error.message);
+        } finally {
+            setEnviando(false);
         }
     };
 
-    const renderItem = ({ item, index }) => (
-        <TouchableOpacity onPress={() => handleItemPress(index)} style={styles.listItem}>
-            <Text style={styles.productName}>{item.nome}</Text>
-            <Text style={styles.productPrice}>
-                R$ {item.preco ? item.preco.toFixed(2).replace('.', ',') : '0,00'}
+    const renderItem = ({ item }) => (
+        <TouchableOpacity
+            onPress={() => {
+                setEditando(item);
+                setQuantidade(String(carrinho[item.id] || 0));
+            }}
+            style={styles.listItem}
+        >
+            <Text style={styles.productName}>
+                {item.nome} {carrinho[item.id] ? `(${carrinho[item.id]}x)` : ''}
             </Text>
+            <Text style={styles.productPrice}>{formatarReal(item.preco)}</Text>
         </TouchableOpacity>
     );
 
@@ -114,42 +107,70 @@ const ProductScreen = () => {
                 <Text style={styles.headerText}>Adicionar compra</Text>
             </View>
 
+            <View style={styles.inputContainer}>
+                <Menu
+                    visible={menuAberto}
+                    onDismiss={() => setMenuAberto(false)}
+                    anchor={
+                        <Button mode="outlined" onPress={() => setMenuAberto(true)}>
+                            <Text>
+                                {dependenteSelecionado
+                                    ? `${dependenteSelecionado.nome} (${dependenteSelecionado.responsavel})`
+                                    : 'Selecione o dependente'}
+                            </Text>
+                        </Button>
+                    }
+                >
+                    <ScrollView style={{ maxHeight: 240 }}>
+                        {dependentes.map((dep) => (
+                            <TouchableOpacity
+                                key={dep.id}
+                                onPress={() => {
+                                    setDependenteSelecionado(dep);
+                                    setMenuAberto(false);
+                                }}
+                            >
+                                <Text style={styles.productName}>
+                                    {dep.nome} — {dep.responsavel}
+                                    {dep.lanche_avulso ? '' : ' (sem lanche avulso)'}
+                                </Text>
+                            </TouchableOpacity>
+                        ))}
+                    </ScrollView>
+                </Menu>
+            </View>
+
             <FlatList
-                data={products}
+                data={produtos}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id.toString()}
-                contentContainerStyle={styles.flatListContent}
+                ListEmptyComponent={<Text style={styles.productName}>Nenhum produto no estoque.</Text>}
             />
 
-            {editingIndex !== null && ( // Renderiza o TextInput apenas se um item estiver sendo editado
+            {editando !== null && (
                 <View style={styles.quantityInputContainer}>
                     <TextInput
                         style={styles.quantityInput}
-                        value={inputQuantity}
-                        onChangeText={handleQuantityChange}
+                        value={quantidade}
+                        onChangeText={setQuantidade}
                         keyboardType="numeric"
                         placeholder="Quantidade"
                     />
-                    <TouchableOpacity onPress={handleSaveQuantity} style={styles.saveButton}>
+                    <TouchableOpacity onPress={salvarQuantidade} style={styles.saveButton}>
                         <Text style={styles.saveButtonText}>Salvar</Text>
                     </TouchableOpacity>
                 </View>
             )}
 
-            <TextInput
-                style={styles.totalInput}
-                value={`R$ ${total.toFixed(2).replace('.', ',')}`} // Formata o total para BRL
-                editable={false}
-            />
+            <TextInput style={styles.totalInput} value={formatarReal(total)} editable={false} />
 
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.paymentButton} onPress={handlePayment}>
+                <TouchableOpacity style={styles.paymentButton} onPress={registrarVenda} disabled={enviando}>
                     <View style={styles.iconContainer}>
-                        <Image
-                            source={require('../../assets/contactless.png')}
-                            style={styles.icon}
-                        />
-                        <Text style={styles.paymentText}>Pagamento</Text>
+                        <Image source={require('../../assets/contactless.png')} style={styles.icon} />
+                        <Text style={styles.paymentText}>
+                            {enviando ? 'Registrando...' : 'Registrar venda'}
+                        </Text>
                     </View>
                 </TouchableOpacity>
             </View>

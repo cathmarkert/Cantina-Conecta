@@ -1,90 +1,66 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Image, FlatList, TouchableOpacity } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { View, Text, FlatList, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import styles from "../stylesScreen/stylesParentprofile";
-import { API_URL } from '@env';
+import styles from '../stylesScreen/stylesParentprofile';
+import { api, formatarReal } from '../services/api';
 
 const Parent = () => {
 	const navigation = useNavigation();
 	const [perfil, setPerfil] = useState(null);
 
-	// Função para buscar o perfil
-	const fetchPerfil = async () => {
-		try {
-			const response = await fetch(`${API_URL}/profile`);
-			if (!response.ok) {
-				throw new Error('Erro ao buscar perfil: ' + response.statusText);
-			}
-			const data = await response.json();
-			setPerfil(data);
-		} catch (error) {
-			console.error(error);
-		}
-	};
-
-	// Chama fetchPerfil sempre que a tela for focada
 	useFocusEffect(
-		React.useCallback(() => {
-			fetchPerfil();
+		useCallback(() => {
+			api.get('/profile')
+				.then(setPerfil)
+				.catch((error) => Alert.alert('Erro', error.message));
 		}, [])
 	);
 
-	if (!perfil) {
-		return <Text>Carregando...</Text>;
-	}
-
 	const handleLogout = async () => {
 		try {
-			const response = await fetch(`${API_URL}/logout`, {
-				method: 'POST',
-				credentials: 'include',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			});
-
-			const data = await response.json();
-			if (response.ok) {
-				alert(data.message);
-				navigation.reset({
-					index: 0,
-					routes: [{ name: "Login" }],
-				});
-			} else {
-				alert(data.message);
-			}
+			await api.post('/logout');
 		} catch (error) {
-			alert('Erro ao fazer logout: ' + error.message);
+			// Encerrar a sessão local é o esperado mesmo se a chamada falhar.
+			console.error('Erro ao fazer logout:', error.message);
 		}
-	};
 
-	const handlePress = (dependent) => {
-		navigation.navigate('Dependente', { dependent });
+		navigation.reset({ index: 0, routes: [{ name: 'Login' }] });
 	};
 
 	const renderItem = ({ item }) => (
-		<TouchableOpacity style={styles.dependentContainer} onPress={() => handlePress(item)}>
+		<TouchableOpacity
+			style={styles.dependentContainer}
+			onPress={() => navigation.navigate('Dependente', { dependent: item })}
+		>
 			<View style={styles.iconWrapper}>
-				<Image source={{ uri: 'https://via.placeholder.com/50' }} style={styles.icon} />
+				<Icon name="user-circle" size={50} color="#8285CD" style={styles.icon} />
 			</View>
 			<View>
 				<Text style={styles.dependentName}>{item.nome}</Text>
-				<Text style={styles.dependentAmount}>R$ {item.limite}</Text>
+				<Text style={styles.dependentAmount}>Gasto: {formatarReal(item.valor_gasto)}</Text>
 			</View>
 		</TouchableOpacity>
 	);
 
+	if (!perfil) {
+		return (
+			<View style={styles.container}>
+				<Text>Carregando...</Text>
+			</View>
+		);
+	}
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.profileContainer}>
-				<Image source={{ uri: 'https://via.placeholder.com/150' }} style={styles.profileImage} />
+				<Icon name="user-circle" size={100} color="#8285CD" style={styles.profileImage} />
 				<Text style={styles.profileName}>{perfil.nome}</Text>
 			</View>
 
 			<View style={styles.amountContainer}>
 				<View style={styles.creditBox}>
-					<Text style={styles.amountText}>R$ {perfil.credito}</Text>
+					<Text style={styles.amountText}>{formatarReal(perfil.credito)}</Text>
 				</View>
 				<TouchableOpacity onPress={() => navigation.navigate('Pagamento')}>
 					<Icon name="money-bill" size={24} color="#006600" />
@@ -94,7 +70,8 @@ const Parent = () => {
 			<FlatList
 				data={perfil.dependentes}
 				renderItem={renderItem}
-				keyExtractor={item => item.id.toString()} // Certifique-se de converter o ID para string
+				keyExtractor={(item) => item.id.toString()}
+				ListEmptyComponent={<Text style={styles.dependentName}>Nenhum dependente cadastrado.</Text>}
 				style={styles.list}
 			/>
 

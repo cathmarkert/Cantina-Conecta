@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../stylesScreen/stylesAddestoque';
-import { API_URL } from '@env';
+import { api } from '../services/api';
 
 const AddEstoque = () => {
     const navigation = useNavigation();
@@ -27,43 +27,32 @@ const AddEstoque = () => {
             return;
         }
 
-        const numericPreco = parseFloat(preco.replace(',', '.')).toFixed(2);
+        const numericPreco = parseFloat(preco.replace(',', '.'));
+        const numericQuantidade = parseInt(quantidade, 10);
 
-        const estoqueData = {
-            nome,
-            quantidade: parseInt(quantidade, 10),
-            preco: numericPreco,
-            contem_lactose: isLactoseChecked,
-            contem_gluten: isGlutenChecked,
-        };
+        if (isNaN(numericPreco) || isNaN(numericQuantidade)) {
+            Alert.alert('Erro', 'Quantidade e preço precisam ser números.');
+            return;
+        }
 
         try {
-            const response = await fetch(`${API_URL}/add-estoque`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(estoqueData),
+            await api.post('/add-estoque', {
+                nome,
+                quantidade: numericQuantidade,
+                preco: numericPreco,
+                contem_lactose: isLactoseChecked,
+                contem_gluten: isGlutenChecked,
             });
 
-            const data = await response.json();
-
-            if (response.ok) {
-                Alert.alert('Sucesso', 'Produto adicionado ao estoque com sucesso!');
-                // Limpa os campos após o sucesso
-                setNome('');
-                setQuantidade('');
-                setPreco('');
-                setIsLactoseChecked(false);
-                setIsGlutenChecked(false);
-                // Navega para a tela anterior ou outra tela
-                navigation.navigate('Estoque');
-            } else {
-                Alert.alert('Erro', data.message || 'Erro ao adicionar produto no estoque.');
-            }
+            Alert.alert('Sucesso', 'Produto adicionado ao estoque com sucesso!');
+            setNome('');
+            setQuantidade('');
+            setPreco('');
+            setIsLactoseChecked(false);
+            setIsGlutenChecked(false);
+            navigation.goBack();
         } catch (error) {
-            Alert.alert('Erro', 'Ocorreu um erro na conexão.');
-            console.error(error);
+            Alert.alert('Erro', error.message);
         }
     };
 

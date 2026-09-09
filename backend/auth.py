@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request, session
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from models import Usuario, db
-from security import login_required
+
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -54,16 +54,6 @@ def login():
         'message': 'Login realizado com sucesso!',
         'id': user.id,
         'is_owner': user.is_owner
-    }), 200
-
-
-@auth_bp.route('/user_data', methods=['GET'])
-@login_required
-def get_user_data(usuario):
-    return jsonify({
-        'id': usuario.id,
-        'email': usuario.email,
-        'name': usuario.name
     }), 200
 
 

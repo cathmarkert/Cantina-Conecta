@@ -104,6 +104,7 @@ def registrar_pedido(dependente, itens, horario, origem):
 def serializar_pedido(pedido):
     return {
         'id': pedido.id,
+        'dependente_id': pedido.dependente_id,
         'nome': pedido.dependente.name,
         'responsavel': pedido.dependente.usuario.name,
         'data': pedido.data.strftime('%d/%m/%Y'),

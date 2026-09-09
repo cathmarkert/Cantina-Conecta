@@ -3,7 +3,7 @@ from decimal import Decimal, InvalidOperation
 from flask import Blueprint, jsonify, request
 
 from models import Dependente, Recarga, db
-from security import buscar_dependente_do_usuario, login_required
+from security import buscar_dependente_do_usuario, login_required, owner_required
 
 routes_bp = Blueprint('routes', __name__)
 
@@ -64,6 +64,17 @@ def add_dependente(usuario):
     except Exception as e:
         db.session.rollback()
         return jsonify({'message': 'Erro ao adicionar dependente: ' + str(e)}), 500
+
+
+@routes_bp.route('/dependentes', methods=['GET'])
+@owner_required
+def listar_dependentes(usuario):
+    """Todos os dependentes da cantina, para a venda no balcão."""
+    dependentes = Dependente.query.order_by(Dependente.name).all()
+    return jsonify([
+        {**serializar_dependente(dep), 'responsavel': dep.usuario.name}
+        for dep in dependentes
+    ]), 200
 
 
 @routes_bp.route('/remove-dependentes/<int:id>', methods=['DELETE'])

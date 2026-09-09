@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import styles from '../stylesScreen/stylesAddaviso';
-import { API_URL } from '@env'; // Certifique-se de ter a URL da API configurada no seu ambiente
+import { api } from '../services/api';
 
 const AddAviso = () => {
+    const navigation = useNavigation();
     const [aviso, setAviso] = useState('');
-    const [isChecked, setIsChecked] = useState(false);
-    const toggleCheckbox = () => {
-        setIsChecked(!isChecked);
-    };
+    const [enviando, setEnviando] = useState(false);
 
     const handleSubmit = async () => {
         if (!aviso) {
@@ -16,32 +15,16 @@ const AddAviso = () => {
             return;
         }
 
-        const avisoData = {
-            mensagem: aviso,
-            notificar_responsaveis: isChecked,
-        };
-
+        setEnviando(true);
         try {
-            const response = await fetch(`${API_URL}/add-aviso`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(avisoData),
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                Alert.alert('Sucesso', 'Aviso adicionado com sucesso!');
-                setAviso(''); // Limpa o campo de aviso
-                setIsChecked(false); // Reseta o checkbox
-            } else {
-                Alert.alert('Erro', data.message || 'Erro ao adicionar aviso.');
-            }
+            await api.post('/add-aviso', { mensagem: aviso });
+            Alert.alert('Sucesso', 'Aviso adicionado com sucesso!');
+            setAviso('');
+            navigation.goBack();
         } catch (error) {
-            Alert.alert('Erro', 'Ocorreu um erro na conexão.');
-            console.error(error);
+            Alert.alert('Erro', error.message);
+        } finally {
+            setEnviando(false);
         }
     };
 
@@ -56,18 +39,11 @@ const AddAviso = () => {
                         placeholderTextColor="#B0B0B0"
                         value={aviso}
                         onChangeText={setAviso}
-                        editable={true}
+                        multiline
                     />
 
-                    <TouchableOpacity style={styles.checkboxContainer} onPress={toggleCheckbox}>
-                        <View style={styles.checkbox}>
-                            {isChecked && <View style={styles.checked} />}
-                        </View>
-                        <Text style={styles.checkboxText}> Notificar responsáveis </Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                        <Text style={styles.buttonText}>Adicionar</Text>
+                    <TouchableOpacity style={styles.button} onPress={handleSubmit} disabled={enviando}>
+                        <Text style={styles.buttonText}>{enviando ? 'Enviando...' : 'Adicionar'}</Text>
                     </TouchableOpacity>
                 </View>
             </View>

@@ -1,11 +1,21 @@
-import * as React from "react";
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import React, { useCallback, useState } from 'react';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { useNavigation } from '@react-navigation/native';
-import styles from "../stylesScreen/stylesHomeowner";
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import styles from '../stylesScreen/stylesHomeowner';
+import { api } from '../services/api';
 
 const HomeOwner = () => {
     const navigation = useNavigation();
+    const [resumo, setResumo] = useState({ lanches_30_dias: 0, produto_mais_pedido: '—' });
+
+    useFocusEffect(
+        useCallback(() => {
+            api.get('/resumo')
+                .then(setResumo)
+                .catch((error) => console.error('Erro ao buscar resumo:', error.message));
+        }, [])
+    );
 
     return (
         <View style={styles.screen}>
@@ -19,7 +29,6 @@ const HomeOwner = () => {
                             >
                                 <Icon name="copy" size={40} color={'#0000FF'} />
                                 <Text>Extrato </Text>
-
                             </TouchableOpacity>
 
                             <TouchableOpacity
@@ -29,37 +38,44 @@ const HomeOwner = () => {
                                 <Icon name="check-circle" size={40} color={'#0000FF'} />
                                 <Text style={styles.cartTitle}>Pedidos </Text>
                             </TouchableOpacity>
-
                         </View>
+
                         <View style={styles.hall}>
                             <View style={styles.statsContainer}>
                                 <View style={styles.stat}>
-                                    <Text style={styles.statText}>Lanches comprados 30 dias</Text>
-                                    <Text style={styles.statNumber}>150</Text>
+                                    <Text style={styles.statText}>Lanches vendidos 30 dias</Text>
+                                    <Text style={styles.statNumber}>{resumo.lanches_30_dias}</Text>
                                 </View>
                                 <View style={styles.stat}>
                                     <Text style={styles.statText}>Produto mais pedido 30 dias</Text>
-                                    <Text style={styles.statNumber}>Sanduíche Natural</Text>
+                                    <Text style={styles.statNumber}>{resumo.produto_mais_pedido}</Text>
                                 </View>
                             </View>
                         </View>
 
-                        <TouchableOpacity style={styles.viewStatementButton} onPress={() => navigation.navigate('Aviso')}>
+                        <TouchableOpacity
+                            style={styles.viewStatementButton}
+                            onPress={() => navigation.navigate('Aviso')}
+                        >
                             <Text style={styles.viewStatementText}>Adicionar Aviso</Text>
                             <Icon name="arrow-right" size={20} color="#000" />
                         </TouchableOpacity>
                     </View>
+
                     <View style={styles.footerSpacer} />
                 </ScrollView>
+
                 <View style={styles.ContainerButton}>
-                    <TouchableOpacity style={styles.selectButton} onPress={() => navigation.navigate('AddCompra')}>
+                    <TouchableOpacity
+                        style={styles.selectButton}
+                        onPress={() => navigation.navigate('AddCompra')}
+                    >
                         <Icon name="pen" color="#fff" size={20} />
                         <Text style={styles.selectButtonText}>Adicionar Compra</Text>
                     </TouchableOpacity>
                 </View>
             </View>
         </View>
-
     );
 };
 

@@ -1,117 +1,133 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, FlatList, Modal, TextInput } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { View, Text, TouchableOpacity, ScrollView, FlatList, Modal, TextInput, Alert } from 'react-native';
 import { Menu, Button } from 'react-native-paper';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import styles from '../stylesScreen/stylesPedidopai';
-import { API_URL } from '@env'; // Certifique-se de configurar o API_URL
+import { api, formatarReal } from '../services/api';
+
+// Horários de entrega oferecidos pela cantina, de meia em meia hora.
+const HORARIOS = Array.from({ length: 23 }, (_, i) => {
+    const minutos = 7 * 60 + i * 30;
+    const hora = String(Math.floor(minutos / 60)).padStart(2, '0');
+    return `${hora}:${minutos % 60 === 0 ? '00' : '30'}`;
+});
 
 const Pedido = () => {
-    const [opcoes, setOpcoes] = useState([]); // Lista unificada de produtos
-    const [visibleChild, setVisibleChild] = useState(false);
-    const [selectedChild, setSelectedChild] = useState(null);
-    const [children, setChildren] = useState([]); // Inicialmente vazio
-    const [visibleTime, setVisibleTime] = useState(false);
-    const [selectedTime, setSelectedTime] = useState(null);
-    const [selectedProduct, setSelectedProduct] = useState(null);
-    const [quantity, setQuantity] = useState(1); // Estado para a quantidade do produto
-    const [visibleQuantityModal, setVisibleQuantityModal] = useState(false); // Estado para controlar o modal de quantidade
-    const [time] = useState([
-        { id: 1, name: '7:00' },
-        { id: 2, name: '7:30' },
-        { id: 3, name: '8:00' },
-        { id: 4, name: '8:30' },
-        { id: 5, name: '9:00' },
-        { id: 6, name: '9:30' },
-        { id: 7, name: '10:00' },
-        { id: 8, name: '10:30' },
-        { id: 9, name: '11:00' },
-        { id: 10, name: '11:30' },
-        { id: 11, name: '12:00' },
-        { id: 12, name: '12:30' },
-        { id: 13, name: '13:00' },
-        { id: 14, name: '13:30' },
-        { id: 15, name: '14:00' },
-        { id: 16, name: '14:30' },
-        { id: 17, name: '15:00' },
-        { id: 18, name: '15:30' },
-        { id: 19, name: '16:00' },
-        { id: 20, name: '16:30' },
-        { id: 21, name: '17:00' },
-        { id: 22, name: '17:30' },
-        { id: 23, name: '18:00' }
-    ]);
+    const navigation = useNavigation();
 
-    // Função para buscar o perfil do usuário e estoque
-    const fetchData = async () => {
+    const [produtos, setProdutos] = useState([]);
+    const [dependentes, setDependentes] = useState([]);
+
+    const [dependenteSelecionado, setDependenteSelecionado] = useState(null);
+    const [horarioSelecionado, setHorarioSelecionado] = useState(null);
+    const [menuDependente, setMenuDependente] = useState(false);
+    const [menuHorario, setMenuHorario] = useState(false);
+
+    // Itens escolhidos antes de confirmar: [{ produto, quantidade }]
+    const [carrinho, setCarrinho] = useState([]);
+    const [produtoEmEdicao, setProdutoEmEdicao] = useState(null);
+    const [quantidade, setQuantidade] = useState('1');
+    const [enviando, setEnviando] = useState(false);
+
+    const carregarDados = useCallback(() => {
+        api.get('/profile')
+            .then((perfil) => setDependentes(perfil.dependentes || []))
+            .catch((error) => Alert.alert('Erro', error.message));
+
+        api.get('/estoque')
+            .then(setProdutos)
+            .catch((error) => Alert.alert('Erro', error.message));
+    }, []);
+
+    useFocusEffect(carregarDados);
+
+    const total = carrinho.reduce(
+        (soma, item) => soma + Number(item.produto.preco) * item.quantidade,
+        0
+    );
+
+    const abrirModalQuantidade = (produto) => {
+        setProdutoEmEdicao(produto);
+        setQuantidade('1');
+    };
+
+    const adicionarAoCarrinho = () => {
+        const qtd = parseInt(quantidade, 10);
+
+        if (isNaN(qtd) || qtd <= 0) {
+            Alert.alert('Erro', 'Informe uma quantidade válida.');
+            return;
+        }
+
+        if (qtd > produtoEmEdicao.quantidade) {
+            Alert.alert('Erro', `Restam apenas ${produtoEmEdicao.quantidade} em estoque.`);
+            return;
+        }
+
+        setCarrinho((atual) => {
+            const existente = atual.find((item) => item.produto.id === produtoEmEdicao.id);
+            if (existente) {
+                return atual.map((item) =>
+                    item.produto.id === produtoEmEdicao.id ? { ...item, quantidade: qtd } : item
+                );
+            }
+            return [...atual, { produto: produtoEmEdicao, quantidade: qtd }];
+        });
+
+        setProdutoEmEdicao(null);
+    };
+
+    const removerDoCarrinho = (produtoId) => {
+        setCarrinho((atual) => atual.filter((item) => item.produto.id !== produtoId));
+    };
+
+    const confirmarPedido = async () => {
+        if (!dependenteSelecionado) {
+            Alert.alert('Erro', 'Selecione o dependente.');
+            return;
+        }
+
+        if (!horarioSelecionado) {
+            Alert.alert('Erro', 'Selecione o horário de entrega.');
+            return;
+        }
+
+        if (carrinho.length === 0) {
+            Alert.alert('Erro', 'Adicione ao menos um item ao pedido.');
+            return;
+        }
+
+        setEnviando(true);
         try {
-            const profileResponse = await fetch(`${API_URL}/profile`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+            await api.post('/pedidos', {
+                dependente_id: dependenteSelecionado.id,
+                horario: horarioSelecionado,
+                itens: carrinho.map((item) => ({
+                    estoque_id: item.produto.id,
+                    quantidade: item.quantidade,
+                })),
             });
-            const profileData = await profileResponse.json();
-            setChildren(profileData.dependentes || []); // Preenche o dropdown de filhos
 
-            const estoqueResponse = await fetch(`${API_URL}/estoque`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            const estoqueData = await estoqueResponse.json();
-            setOpcoes(estoqueData || []); // Preenche os itens de produtos
-
+            Alert.alert('Sucesso', 'Pedido realizado com sucesso!');
+            setCarrinho([]);
+            setDependenteSelecionado(null);
+            setHorarioSelecionado(null);
+            navigation.navigate('Inicio');
         } catch (error) {
-            console.error('Erro ao buscar dados:', error);
+            Alert.alert('Não foi possível concluir', error.message);
+        } finally {
+            setEnviando(false);
         }
     };
 
-    useEffect(() => {
-        fetchData(); // Carregar dados ao montar o componente
-    }, []);
-
-    const openChildMenu = () => setVisibleChild(true);
-    const closeChildMenu = () => setVisibleChild(false);
-
-    const openTimeMenu = () => setVisibleTime(true);
-    const closeTimeMenu = () => setVisibleTime(false);
-
-    const openQuantityModal = (item) => {
-        setSelectedProduct(item);
-        setQuantity(1); // Reinicia a quantidade ao abrir o modal
-        setVisibleQuantityModal(true);
-    };
-
-    const closeQuantityModal = () => setVisibleQuantityModal(false);
-
-    const handleConfirmQuantity = () => {
-        // Lógica para enviar dependente, horário, produto e quantidade
-        console.log('Dependente:', selectedChild);
-        console.log('Horário:', selectedTime);
-        console.log('Produto:', selectedProduct);
-        console.log('Quantidade:', quantity);
-
-        // Aqui você pode enviar os dados para o servidor usando fetch ou outra abordagem.
-
-        closeQuantityModal();
-    };
-
-    const toggleChildSelection = (item) => {
-        setSelectedChild(selectedChild && selectedChild.id === item.id ? null : item);
-        closeChildMenu();
-    };
-
-    const toggleTimeSelection = (item) => {
-        setSelectedTime(selectedTime && selectedTime.id === item.id ? null : item);
-        closeTimeMenu();
-    };
-
-    const renderItem = ({ item }) => (
-        <TouchableOpacity onPress={() => openQuantityModal(item)}>
+    const renderProduto = ({ item }) => (
+        <TouchableOpacity onPress={() => abrirModalQuantidade(item)} disabled={item.quantidade === 0}>
             <View style={styles.carouselItem}>
-                <Text style={styles.carouselText}>Nome: {item.nome}</Text>
-                <Text style={styles.carouselText}>Preço: R$ {item.preco}</Text>
-                <Text style={styles.carouselText}>Quantidade: {item.quantidade}</Text>
+                <Text style={styles.carouselText}>{item.nome}</Text>
+                <Text style={styles.carouselText}>{formatarReal(item.preco)}</Text>
+                <Text style={styles.carouselText}>
+                    {item.quantidade > 0 ? `Estoque: ${item.quantidade}` : 'Esgotado'}
+                </Text>
             </View>
         </TouchableOpacity>
     );
@@ -121,21 +137,25 @@ const Pedido = () => {
             <View style={styles.inputContainer}>
                 <Text style={styles.sectionTitle}>Selecionar Dependente:</Text>
                 <Menu
-                    visible={visibleChild}
-                    onDismiss={closeChildMenu}
+                    visible={menuDependente}
+                    onDismiss={() => setMenuDependente(false)}
                     anchor={
-                        <Button mode="outlined" onPress={openChildMenu} style={styles.menuButton}>
-                            <Text>{selectedChild ? selectedChild.nome : 'Selecione o filho'}</Text>
+                        <Button mode="outlined" onPress={() => setMenuDependente(true)} style={styles.menuButton}>
+                            <Text>{dependenteSelecionado ? dependenteSelecionado.nome : 'Selecione o dependente'}</Text>
                         </Button>
                     }
                     style={styles.menu}
                 >
                     <ScrollView style={{ maxHeight: 200 }}>
-                        {children.map((item) => (
-                            <TouchableOpacity key={item.id} onPress={() => toggleChildSelection(item)}>
-                                <Text style={[styles.menuItem, selectedChild && selectedChild.id === item.id ? styles.menuItemSelected : null]}>
-                                    {item.nome}
-                                </Text>
+                        {dependentes.map((item) => (
+                            <TouchableOpacity
+                                key={item.id}
+                                onPress={() => {
+                                    setDependenteSelecionado(item);
+                                    setMenuDependente(false);
+                                }}
+                            >
+                                <Text style={styles.menuItem}>{item.nome}</Text>
                             </TouchableOpacity>
                         ))}
                     </ScrollView>
@@ -145,21 +165,25 @@ const Pedido = () => {
             <View style={styles.inputContainer}>
                 <Text style={styles.sectionTitle}>Selecionar Horário:</Text>
                 <Menu
-                    visible={visibleTime}
-                    onDismiss={closeTimeMenu}
+                    visible={menuHorario}
+                    onDismiss={() => setMenuHorario(false)}
                     anchor={
-                        <Button mode="outlined" onPress={openTimeMenu} style={styles.menuButton}>
-                            <Text>{selectedTime ? selectedTime.name : 'Selecione o horário'}</Text>
+                        <Button mode="outlined" onPress={() => setMenuHorario(true)} style={styles.menuButton}>
+                            <Text>{horarioSelecionado || 'Selecione o horário'}</Text>
                         </Button>
                     }
                     style={styles.menu}
                 >
                     <ScrollView style={{ maxHeight: 200 }}>
-                        {time.map((item) => (
-                            <TouchableOpacity key={item.id} onPress={() => toggleTimeSelection(item)}>
-                                <Text style={[styles.menuItem, selectedTime && selectedTime.id === item.id ? styles.menuItemSelected : null]}>
-                                    {item.name}
-                                </Text>
+                        {HORARIOS.map((hora) => (
+                            <TouchableOpacity
+                                key={hora}
+                                onPress={() => {
+                                    setHorarioSelecionado(hora);
+                                    setMenuHorario(false);
+                                }}
+                            >
+                                <Text style={styles.menuItem}>{hora}</Text>
                             </TouchableOpacity>
                         ))}
                     </ScrollView>
@@ -169,44 +193,66 @@ const Pedido = () => {
             <View style={styles.containerbox}>
                 <Text style={styles.sectionTitle}>Produtos:</Text>
                 <FlatList
-                    data={opcoes}
+                    data={produtos}
                     horizontal
-                    renderItem={renderItem}
+                    renderItem={renderProduto}
                     keyExtractor={(item) => item.id.toString()}
+                    ListEmptyComponent={<Text style={styles.carouselText}>Nenhum produto disponível.</Text>}
                 />
             </View>
 
-            {/* Modal para seleção de quantidade */}
+            <View style={styles.containerbox}>
+                <Text style={styles.sectionTitle}>Itens do pedido:</Text>
+                {carrinho.length === 0 ? (
+                    <Text style={styles.carouselText}>Toque num produto para adicionar.</Text>
+                ) : (
+                    carrinho.map((item) => (
+                        <TouchableOpacity
+                            key={item.produto.id}
+                            onPress={() => removerDoCarrinho(item.produto.id)}
+                        >
+                            <Text style={styles.menuItem}>
+                                {item.quantidade}x {item.produto.nome} —{' '}
+                                {formatarReal(Number(item.produto.preco) * item.quantidade)}   (toque para remover)
+                            </Text>
+                        </TouchableOpacity>
+                    ))
+                )}
+                <Text style={styles.sectionTitle}>Total: {formatarReal(total)}</Text>
+            </View>
+
             <Modal
                 animationType="slide"
-                transparent={true}
-                visible={visibleQuantityModal}
-                onRequestClose={closeQuantityModal}
+                transparent
+                visible={produtoEmEdicao !== null}
+                onRequestClose={() => setProdutoEmEdicao(null)}
             >
                 <View style={styles.modalContainer}>
                     <View style={styles.modalContent}>
-                        <Text style={styles.modalTitle}>Selecionar Quantidade</Text>
+                        <Text style={styles.modalTitle}>
+                            Quantidade de {produtoEmEdicao ? produtoEmEdicao.nome : ''}
+                        </Text>
                         <TextInput
                             style={styles.input}
                             keyboardType="numeric"
-                            value={quantity.toString()}
-                            onChangeText={(text) => setQuantity(Number(text))} // Converte para número, garantindo que pelo menos 1
+                            value={quantidade}
+                            onChangeText={setQuantidade}
                         />
-                        <Button mode="contained" onPress={handleConfirmQuantity} style={styles.confirmButton}>
-                            Confirmar
+                        <Button mode="contained" onPress={adicionarAoCarrinho} style={styles.confirmButton}>
+                            Adicionar
                         </Button>
-                        <Button mode="outlined" onPress={closeQuantityModal} style={styles.cancelButton}>
+                        <Button mode="outlined" onPress={() => setProdutoEmEdicao(null)} style={styles.cancelButton}>
                             Cancelar
                         </Button>
                     </View>
                 </View>
             </Modal>
 
-            <TouchableOpacity style={styles.button} onPress={() => { }}>
-                <Text style={styles.buttonText}>Confirmar</Text>
+            <TouchableOpacity style={styles.button} onPress={confirmarPedido} disabled={enviando}>
+                <Text style={styles.buttonText}>{enviando ? 'Enviando...' : 'Confirmar'}</Text>
             </TouchableOpacity>
         </ScrollView>
     );
-}
+};
 
 export default Pedido;

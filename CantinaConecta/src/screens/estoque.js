@@ -1,55 +1,39 @@
-import React, { useState, useCallback } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Image } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import styles from '../stylesScreen/stylesEstoque';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import { API_URL } from '@env';
+import { api, formatarReal } from '../services/api';
 
 const Estoque = () => {
     const navigation = useNavigation();
     const [estoque, setEstoque] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [carregando, setCarregando] = useState(true);
 
-    // Função para buscar dados do estoque
-    const fetchEstoque = async () => {
-        try {
-            const response = await fetch(`${API_URL}/estoque`);
-            const data = await response.json();
-            setEstoque(data); // Armazena os dados do estoque
-            setLoading(false); // Finaliza o loading
-        } catch (error) {
-            console.error('Erro ao buscar estoque:', error);
-        }
-    };
-
-    // useFocusEffect para buscar dados sempre que a tela entrar em foco
+    // Recarrega ao focar para refletir cadastros e baixas feitas em outras telas.
     useFocusEffect(
         useCallback(() => {
-            fetchEstoque();
+            api.get('/estoque')
+                .then(setEstoque)
+                .catch((error) => console.error('Erro ao buscar estoque:', error.message))
+                .finally(() => setCarregando(false));
         }, [])
     );
 
-    if (loading) {
-        return (
-            <View style={styles.loadingContainer}>
-                <Text style={styles.loadingText}>Carregando estoque...</Text>
-            </View>
-        );
-    }
-
-    // Função para renderizar cada item do estoque
-    const renderItem = ({ item, index }) => (
-        <View key={index} style={[styles.productRow, { marginBottom: index < estoque.length - 1 ? 8 : 0 }]}>
+    const renderItem = ({ item }) => (
+        <View style={styles.productRow}>
             <View style={styles.productLeft}>
                 <View style={styles.circle}>
                     <Text style={styles.circleText}>{item.quantidade}</Text>
                 </View>
-                <Text style={styles.productName}>{item.nome}</Text>
+                <View>
+                    <Text style={styles.productName}>{item.nome}</Text>
+                    <Text style={styles.productName}>{formatarReal(item.preco)}</Text>
+                </View>
             </View>
 
             <View style={styles.productIcons}>
                 <View style={styles.iconColumn}>
-                    {/* Exibe um ícone com base em contém lactose e contém glúten */}
                     {item.contem_lactose ? (
                         <Icon name="cheese" size={25} color={'#3572EF'} style={{ marginBottom: 5 }} />
                     ) : (
@@ -74,12 +58,16 @@ const Estoque = () => {
                 <Text style={styles.title}>Estoque</Text>
             </View>
 
-            {/* FlatList para renderizar os itens do estoque */}
             <FlatList
                 data={estoque}
                 renderItem={renderItem}
-                keyExtractor={(item, index) => index.toString()} // Chave única baseada no índice
-                contentContainerStyle={styles.stockContainer} // Estilo para o conteúdo da FlatList
+                keyExtractor={(item) => item.id.toString()}
+                contentContainerStyle={styles.stockContainer}
+                ListEmptyComponent={
+                    <Text style={styles.productName}>
+                        {carregando ? 'Carregando estoque...' : 'Nenhum produto cadastrado.'}
+                    </Text>
+                }
             />
 
             <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('AddEstoque')}>

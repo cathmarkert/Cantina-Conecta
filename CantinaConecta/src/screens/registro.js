@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import styles from '../stylesScreen/stylesRegistro';
-import { API_URL } from '@env';
+import { api } from '../services/api';
 
 const Register = ({ navigation }) => {
     const [nome, setNome] = useState('');
@@ -9,40 +9,35 @@ const Register = ({ navigation }) => {
     const [senha, setSenha] = useState('');
     const [confirmarSenha, setConfirmarSenha] = useState('');
     const [isOwner, setIsOwner] = useState(false);
+    const [enviando, setEnviando] = useState(false);
 
     const handleRegister = async () => {
-        if (senha !== confirmarSenha) {
-            alert('As senhas não coincidem!');
+        if (!nome || !email || !senha) {
+            Alert.alert('Erro', 'Preencha nome, email e senha.');
             return;
         }
 
-        try {
-            const response = await fetch(`${API_URL}/register`, {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    email,
-                    password: senha,
-                    name: nome,
-                    is_owner: isOwner
-                }),
-            });
+        if (senha !== confirmarSenha) {
+            Alert.alert('Erro', 'As senhas não coincidem!');
+            return;
+        }
 
-            const data = await response.json();
-            if (response.ok) {
-                alert(data.message);
-                navigation.navigate('Login');
-            } else {
-                alert(data.message);
-            }
+        setEnviando(true);
+        try {
+            await api.post('/register', {
+                email,
+                password: senha,
+                name: nome,
+                is_owner: isOwner,
+            });
+            Alert.alert('Sucesso', 'Usuário registrado com sucesso!');
+            navigation.navigate('Login');
         } catch (error) {
-            alert('Erro ao registrar: ' + error.message);
+            Alert.alert('Erro', error.message);
+        } finally {
+            setEnviando(false);
         }
     };
-
 
     return (
         <View style={styles.container}>
@@ -53,22 +48,23 @@ const Register = ({ navigation }) => {
                 style={styles.input}
                 placeholder='Nome'
                 value={nome}
-                onChangeText={text => setNome(text)}
+                onChangeText={setNome}
             />
 
             <TextInput
                 style={styles.input}
                 placeholder='Email'
                 value={email}
-                onChangeText={text => setEmail(text)}
+                onChangeText={setEmail}
                 keyboardType='email-address'
+                autoCapitalize='none'
             />
 
             <TextInput
                 style={styles.input}
                 placeholder='Senha'
                 value={senha}
-                onChangeText={text => setSenha(text)}
+                onChangeText={setSenha}
                 secureTextEntry={true}
             />
 
@@ -76,7 +72,7 @@ const Register = ({ navigation }) => {
                 style={styles.input}
                 placeholder='Confirmar Senha'
                 value={confirmarSenha}
-                onChangeText={text => setConfirmarSenha(text)}
+                onChangeText={setConfirmarSenha}
                 secureTextEntry={true}
             />
 
@@ -87,8 +83,8 @@ const Register = ({ navigation }) => {
                 <Text style={styles.checkboxLabel}>Registrar como Dono </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.button} onPress={handleRegister}>
-                <Text style={styles.buttonText}>Registrar </Text>
+            <TouchableOpacity style={styles.button} onPress={handleRegister} disabled={enviando}>
+                <Text style={styles.buttonText}>{enviando ? 'Registrando...' : 'Registrar'}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => navigation.navigate('Login')}>
