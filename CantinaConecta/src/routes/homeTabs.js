@@ -68,7 +68,7 @@ const HomeTabs = () => {
                 component={PaymentScreen}
                 options={{
                     tabBarLabel: 'Pagamento',
-                    header: () => <HeaderPerfil />,
+                    header: () => <HeaderSaldo />,
                 }}
             />
         </Tab.Navigator>

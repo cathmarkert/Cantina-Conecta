@@ -1,56 +1,73 @@
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+from enum import Enum
+from sqlalchemy import Numeric
 
 db = SQLAlchemy()
 
-class User(db.Model):
-    __tablename__ = 'users'
-    
+# Tabela Associativa entre Dependente e Estoque
+lanche_tabela = db.Table('lanche',
+    db.Column('dependente_id', db.Integer, db.ForeignKey('dependente.id'), primary_key=True),
+    db.Column('estoque_id', db.Integer, db.ForeignKey('estoque.id'), primary_key=True),
+    db.Column('quantidade', db.Integer, nullable=False),
+    db.Column('valor', db.Float, nullable=False),
+    db.Column('horario', db.DateTime, default=datetime.now),
+    db.Column('data', db.DateTime, default=datetime.now)
+)
+
+# Tabela Usuarios
+class Usuario(db.Model):
+    __tablename__ = 'usuarios'
+
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(100), nullable=False)
-    password = db.Column(db.String(50), nullable=False)
     name = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+    credito = db.Column(Numeric(10, 2), default=0.0)
+    email = db.Column(db.String(100), unique=True, nullable=False)
     is_owner = db.Column(db.Boolean, default=False)
 
-    transactions = db.relationship('Transaction', backref='user_transactions', lazy=True)  
-    dependents = db.relationship('Dependent', backref='user_dependents', lazy=True) 
+    dependentes = db.relationship('Dependente', back_populates='usuario')
+    avisos = db.relationship('Aviso', back_populates='dono', foreign_keys='Aviso.dono_id')
 
-class Dependent(db.Model):
-    __tablename__ = 'dependents'
-    
+# Tabela Dependente
+class Dependente(db.Model):
+    __tablename__ = 'dependente'
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    amount = db.Column(db.String(50), nullable=False)
-    registration = db.Column(db.String(50), nullable=False)
-    lanches = db.Column(db.String(50), nullable=False)
-    valorgasto = db.Column(db.String(50), nullable=False)
+    matricula = db.Column(db.String(50), nullable=False, unique=True)
+    lanche_avulso = db.Column(db.Boolean, nullable=False)
+    limite = db.Column(Numeric(10, 2), default=0.0)
+    valor_gasto = db.Column(Numeric(10, 2), default=0.0)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    
-    orders = db.relationship('Order', backref='dependent_orders', lazy=True, overlaps='dependent_orders')
-    transactions = db.relationship('Transaction', backref='dependent_transactions', lazy=True, overlaps='dependent_transactions')
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'))
 
-class Order(db.Model):
-    __tablename__ = 'orders'
-    
+    usuario = db.relationship('Usuario', back_populates='dependentes')
+    lanches = db.relationship('Estoque', secondary=lanche_tabela, back_populates='dependentes')
+
+# Tabela Estoque
+class Estoque(db.Model):
+    __tablename__ = 'estoque'
+
     id = db.Column(db.Integer, primary_key=True)
-    dependent_id = db.Column(db.Integer, db.ForeignKey('dependents.id'), nullable=False)
-    comidas = db.Column(db.Text, nullable=False)
-    bebidas = db.Column(db.Text, nullable=False)
-    time = db.Column(db.String(50), nullable=False)
+    produto = db.Column(db.String(100), nullable=False)
+    quantidade = db.Column(db.Integer, default=0)
+    contem_lactose = db.Column(db.Boolean, default=False)
+    contem_gluten = db.Column(db.Boolean, default=False)
+    preco = db.Column(Numeric(10, 2), default=0.0)
 
-    dependent = db.relationship('Dependent', backref='dependent_orders', lazy=True)
+    dependentes = db.relationship('Dependente', secondary=lanche_tabela, back_populates='lanches')
 
-class Transaction(db.Model):
-    __tablename__ = 'transactions'
-    
+# Tabela Aviso
+class Aviso(db.Model):
+    __tablename__ = 'aviso'
+
     id = db.Column(db.Integer, primary_key=True)
-    type = db.Column(db.String(50), nullable=False)
-    description = db.Column(db.String(255), nullable=False)
-    amount = db.Column(db.String(50), nullable=False)
-    date = db.Column(db.String(50), nullable=False)
+    mensagem = db.Column(db.String(255), nullable=False)
+    data_criacao = db.Column(db.DateTime, default=datetime.now)
 
-    dependent_id = db.Column(db.Integer, db.ForeignKey('dependents.id'), nullable=True)
-    dependent = db.relationship('Dependent', backref='dependent_transactions', lazy=True)
+    dono_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=False)  # Dono é obrigatório
+    responsavel_id = db.Column(db.Integer, db.ForeignKey('usuarios.id'), nullable=True)  # Responsável é opcional
 
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
-    user = db.relationship('User', backref='user_transactions', lazy=True)
+    dono = db.relationship('Usuario', back_populates='avisos', foreign_keys=[dono_id])
+    responsavel = db.relationship('Usuario', foreign_keys=[responsavel_id])

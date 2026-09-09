@@ -11,7 +11,7 @@ import AddEstoque from '../screens/addestoque';
 
 
 // Headers
-import HeaderOwner from '../components/headerOwner';
+import HeaderOwnerLogout from '../components/headerOwnerLogout';
 import HeaderBack from '../components/headerBack';
 
 const HomeStack = createStackNavigator();
@@ -23,7 +23,7 @@ const HomeOwnerStack = () => {
                 name="HomeOwner"
                 component={HomeOwner}
                 options={{
-                    header: () => <HeaderOwner />,
+                    header: () => <HeaderOwnerLogout />,
                 }}
             />
             <HomeStack.Screen

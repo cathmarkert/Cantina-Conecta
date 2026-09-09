@@ -85,7 +85,7 @@ const ExtratoCompra = () => {
             </View>
 
             <View style={styles.ContainerButton}>
-                <TouchableOpacity style={styles.selectButton} onPress={() => navigation.navigate('Selecionar')}>
+                <TouchableOpacity style={styles.selectButton} onPress={() => navigation.navigate('AddCompra')}>
                     <Icon name="pencil" color="#fff" size={20} />
                     <Text style={styles.selectButtonText}>Adicionar Compra</Text>
                 </TouchableOpacity>

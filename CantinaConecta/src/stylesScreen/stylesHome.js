@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     padding: 20 * scale,
     borderRadius: 8 * scale,
     alignItems: 'center',
-    width: width * 0.4, 
+    width: width * 0.4,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,

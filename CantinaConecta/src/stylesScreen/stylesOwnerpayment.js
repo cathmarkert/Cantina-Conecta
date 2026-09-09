@@ -9,14 +9,9 @@ export default StyleSheet.create({
         backgroundColor: '#DCDCDC',
     },
     headerContainer: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: height * 0.01,
+        marginBottom: height * 0.02,
         textAlign: 'center',
         alignSelf: 'center',
-        flexDirection: 'row',
-        alignItems: 'center',
-        width: '80%',
         padding: 20,
         backgroundColor: '#F9F9F9',
         borderRadius: 8,
@@ -29,14 +24,22 @@ export default StyleSheet.create({
     headerText: {
         fontSize: 24,
         fontWeight: 'bold',
-        textAlign: 'center',
-        width: '100%',
     },
     listContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginVertical: height * 0.02,
-        padding: height * 0.01,
+    },
+    listItem: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center', // Alinha os itens verticalmente no centro
+        marginVertical: height * 0.002,
+        padding: 10, // Adiciona um padding para o conteúdo
+        borderWidth: 1, // Adiciona uma borda
+        borderColor: '#ccc', // Cor da borda
+        borderRadius: 8, // Arredonda os cantos da borda
+        backgroundColor: '#fff', // Cor de fundo branca
     },
     column: {
         flex: 1,
@@ -49,7 +52,7 @@ export default StyleSheet.create({
     },
     productButton: {
         backgroundColor: '#3572EF',
-        padding: 10,
+        padding: width * 0.03,
         borderRadius: 8,
         marginBottom: 10,
         width: width * 0.4,
@@ -59,26 +62,32 @@ export default StyleSheet.create({
         color: '#fff',
         fontSize: 16,
     },
-    quantityButton: {
-        backgroundColor: '#f1f1f1',
-        padding: 10,
-        borderRadius: 8,
+    inputContainer: {
         marginBottom: 10,
         width: width * 0.4,
-        textAlign: 'center',
     },
-    quantityText: {
-        fontSize: 16,
+    quantityInput: {
+        backgroundColor: '#F9F9F9',
+        padding: width * 0.02,
+        borderRadius: 8,
+        borderColor: '#ccc',
+        borderWidth: 1,
         textAlign: 'center',
+        width: width * 0.1
     },
     totalInput: {
-        backgroundColor: '#f1f1f1',
+        backgroundColor: '#F9F9F9',
         padding: height * 0.013,
         borderRadius: 8,
+        marginTop: 20,
         marginBottom: 20,
         fontWeight: 'bold',
         fontSize: 16,
         width: '100%',
+    },
+    buttonContainer: {
+        alignItems: 'center',
+        // marginBottom: 20,
     },
     paymentButton: {
         backgroundColor: '#f1f1f1',
@@ -90,43 +99,6 @@ export default StyleSheet.create({
         borderRadius: 8,
         alignItems: 'center',
     },
-    paymentButtonText: {
-        color: '#fff',
-        fontSize: 18,
-        fontWeight: 'bold',
-    },
-    buttonContainer: {
-        alignItems: 'center',  // Centers horizontally
-        marginBottom: 20,
-    },
-    titleContainer: {
-        paddingHorizontal: 20,
-        alignSelf: 'center',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '80%',
-        padding: 20,
-        backgroundColor: '#F9F9F9',
-        borderRadius: 8,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 3,
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold'
-    },
-    quantityInput: {
-        backgroundColor: '#f1f1f1',
-        padding: width * 0.027,
-        borderRadius: 8,
-        marginBottom: 10,
-        width: width * 0.2,
-        textAlign: 'center',
-    },
     iconContainer: {
         flexDirection: 'column',
         alignItems: 'center',
@@ -135,7 +107,55 @@ export default StyleSheet.create({
         fontSize: width * 0.045,
         fontWeight: 'bold',
     },
-    icon: {
-        // Responsivo ao tamanho da tela (exemplo comentado)
+    priceContainer: {
+        flex: 1, // Isso faz com que a coluna de preço ocupe o espaço restante
+        alignItems: 'flex-end', // Alinha o conteúdo do container à direita
+        marginRight: width * 0.04
     },
+
+    productPrice: {
+        fontSize: width * 0.045,
+        fontWeight: 'bold',
+        textAlign: 'right', // Alinha o texto à direita
+    },
+
+    productName: {
+        fontSize: width * 0.045,
+        fontWeight: 'bold',
+    },
+    icon: {
+        width: 70,
+        height: 70,
+    },
+    quantityInputContainer: {
+        flexDirection: 'row', // Organiza o TextInput e o botão em linha
+        margin: 10, // Adiciona margem ao redor do contêiner
+        width: '90%', // Ajusta a largura do contêiner
+        alignSelf: 'center', // Centraliza o contêiner
+    },
+
+    quantityInput: {
+        flex: 1, // O TextInput ocupa todo o espaço disponível
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        padding: 10,
+        backgroundColor: '#f9f9f9',
+        marginRight: 10, // Espaço entre o TextInput e o botão
+    },
+
+    saveButton: {
+        backgroundColor: '#007BFF', // Cor do botão de salvar
+        borderRadius: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+    },
+
+    saveButtonText: {
+        color: '#fff',
+        fontWeight: 'bold',
+    },
+
 });

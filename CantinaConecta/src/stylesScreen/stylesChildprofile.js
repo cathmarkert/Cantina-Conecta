@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
     adjustLimitText: {
         color: '#FFF',
         fontSize: 14,
+        width: width * 0.24,
     },
     detailsSection: {
         flexDirection: 'row',
@@ -161,6 +162,7 @@ const styles = StyleSheet.create({
     },
     viewStatementText: {
         fontSize: 16,
+        width: width * 0.4,
     },
     addButton: {
         backgroundColor: '#0000FF',
@@ -168,11 +170,12 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center',
         marginTop: height * 0.03,
-        marginBottom: height * 0.04,
+        marginBottom: height * 0.07,
     },
     addButtonText: {
         color: '#FFF',
         fontSize: width * 0.04, // Adjusted based on screen width
+        width: width * 0.4,
     },
     child: {
         backgroundColor: '#F2EFEF',

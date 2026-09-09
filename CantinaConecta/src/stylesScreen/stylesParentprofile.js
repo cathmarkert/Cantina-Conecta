@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
     },
     totalAmount: {
         fontSize: width * 0.04, // Adjusted based on screen width
+        width: width * 0.15,
         color: '#000',
         marginTop: height * 0.01,
     },
@@ -75,6 +76,7 @@ const styles = StyleSheet.create({
     },
     dependentAmount: {
         fontSize: width * 0.035, // Adjusted based on screen width
+        width: width * 0.4,
         color: '#000',
     },
     addButton: {

@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
     },
     viewStatementText: {
         fontSize: 16,
+        width: width * 0.7
     },
 });
 
