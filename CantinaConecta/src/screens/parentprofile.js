@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Alert } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from '@expo/vector-icons/FontAwesome5';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import styles from '../stylesScreen/stylesParentprofile';
 import { api, formatarReal } from '../services/api';

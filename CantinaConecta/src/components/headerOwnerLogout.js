@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Alert } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from '@expo/vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../stylesComponents/stylesHeaderSaldo';
 import { api } from '../services/api';
